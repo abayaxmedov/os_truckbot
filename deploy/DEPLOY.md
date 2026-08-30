@@ -82,8 +82,9 @@ cp .env.prod.example .env && nano .env          # real secrets; DEV_AUTH_BYPASS=
 # db + backend (backend published on 127.0.0.1:8001)
 docker compose -f docker-compose.server.yml up -d --build
 
-# build the Mini App static (served from miniapp/dist by host nginx)
+# build the Mini App static, publish to /var/www/truckcenter (served by host nginx)
 docker run --rm -v "$PWD/miniapp":/app -w /app node:20-alpine sh -lc "npm ci && npm run build"
+sudo mkdir -p /var/www/truckcenter && sudo cp -r miniapp/dist/. /var/www/truckcenter/
 
 # TLS cert (skip if it already exists for the domain):
 sudo certbot certonly --nginx -d 3-227-184-179.sslip.io
