@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4f7fb"/><stop offset="1" stop-color="#e4ebf4"/>
+    </linearGradient>
+    <radialGradient id="sh" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#153259" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#153259" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <ellipse cx="200" cy="322" rx="118" ry="24" fill="url(#sh)"/>
+  <g fill="none" stroke="#153259" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    
+    <rect x="176" y="86" width="34" height="24" rx="4" fill="#b7c4d9"/>
+    <path d="M150 150c0-14 10-24 24-24h38c14 0 24 10 24 24v140c0 14-10 24-24 24h-38c-14 0-24-10-24-24z" fill="#e6ebf3"/>
+    <rect x="163" y="180" width="74" height="70" rx="8" fill="#ffffff"/>
+    <path d="M175 200h50M175 218h50M175 236h34" stroke="#b7c4d9" stroke-width="6"/>
+    <path d="M150 150c0-14 10-24 24-24h38c14 0 24 10 24 24v140c0 14-10 24-24 24h-38c-14 0-24-10-24-24z"/>
+    
+  </g>
+</svg>

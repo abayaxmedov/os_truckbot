@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Env / secrets — NEVER commit (repo is public)
+.env
+*.env
+!.env.example
+!.env.prod.example
+*.pem
+*.key
+aws-key_kz*
+
+# Runtime (local dev)
+.dev-logs/
+.dev-pids
+
+# Media / uploads
+backend/app/media/*
+!backend/app/media/.gitkeep
+
+# Node / frontend
+node_modules/
+miniapp/dist/
+miniapp/.vite/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Source TZ (kept as docs/TZ.md instead)
+*.docx
+
+# DB dumps
+*.sqlite3
+*.db

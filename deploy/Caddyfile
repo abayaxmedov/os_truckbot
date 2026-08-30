@@ -1,0 +1,19 @@
+# Caddy auto-provisions & renews a Let's Encrypt certificate for this domain.
+# sslip.io resolves 3-227-184-179.sslip.io -> 3.227.184.179 (no domain purchase needed).
+# Requires inbound ports 80 and 443 open on the server's security group.
+3-227-184-179.sslip.io {
+	encode gzip
+
+	# API, media and the Telegram webhook go to the backend container.
+	@proxy path /api/* /media/* /telegram/*
+	handle @proxy {
+		reverse_proxy backend:8000
+	}
+
+	# Everything else is the Mini App SPA.
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4f7fb"/><stop offset="1" stop-color="#e4ebf4"/>
+    </linearGradient>
+    <radialGradient id="sh" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#153259" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#153259" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <ellipse cx="200" cy="322" rx="118" ry="24" fill="url(#sh)"/>
+  <g fill="none" stroke="#153259" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    
+    <path d="M150 120h100a56 56 0 0 1 0 112H150a56 56 0 0 1 0-112z" fill="#e6ebf3"/>
+    <path d="M150 150h100a26 26 0 0 1 0 52H150a26 26 0 0 1 0-52z" fill="#ffffff"/>
+    <path d="M150 120h100a56 56 0 0 1 0 112H150a56 56 0 0 1 0-112z"/>
+    <path d="M150 150h100a26 26 0 0 1 0 52H150a26 26 0 0 1 0-52z"/>
+    <g stroke="#b7c4d9" stroke-width="4">
+    <line x1="160" y1="124" x2="160" y2="140" /><line x1="172" y1="124" x2="172" y2="140" /><line x1="184" y1="124" x2="184" y2="140" /><line x1="196" y1="124" x2="196" y2="140" /><line x1="208" y1="124" x2="208" y2="140" /><line x1="220" y1="124" x2="220" y2="140" /><line x1="232" y1="124" x2="232" y2="140" /><line x1="244" y1="124" x2="244" y2="140" /></g>
+  </g>
+</svg>

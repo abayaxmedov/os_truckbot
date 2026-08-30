@@ -1,0 +1,12 @@
+# ngrok Traffic Policy — inject the skip-browser-warning header on every inbound
+# request so the free-tier ngrok interstitial page never blocks the Telegram Mini App
+# (the top-level document loaded by Telegram's WebView can't set headers itself).
+#
+# Usage:
+#   ngrok http --url=<your-static-domain> 5173 --traffic-policy-file ngrok.policy.yml
+on_http_request:
+  - actions:
+      - type: add-headers
+        config:
+          headers:
+            ngrok-skip-browser-warning: "true"
