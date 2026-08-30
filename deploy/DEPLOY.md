@@ -70,6 +70,30 @@ cd os_truckbot && git pull
 docker compose -f docker-compose.prod.yml up -d --build
 ```
 
+## Shared server (host already runs nginx + certbot)
+
+If the host already terminates TLS with nginx (multiple sites), don't bind 80/443 from Docker.
+Run only db + backend on localhost and let host nginx serve the Mini App + proxy the API:
+
+```bash
+git clone https://github.com/abayaxmedov/os_truckbot.git && cd os_truckbot
+cp .env.prod.example .env && nano .env          # real secrets; DEV_AUTH_BYPASS=false
+
+# db + backend (backend published on 127.0.0.1:8001)
+docker compose -f docker-compose.server.yml up -d --build
+
+# build the Mini App static (served from miniapp/dist by host nginx)
+docker run --rm -v "$PWD/miniapp":/app -w /app node:20-alpine sh -lc "npm ci && npm run build"
+
+# TLS cert (skip if it already exists for the domain):
+sudo certbot certonly --nginx -d 3-227-184-179.sslip.io
+
+# install the site
+sudo cp deploy/nginx-truckcenter.conf /etc/nginx/sites-available/truckcenter
+sudo ln -sf /etc/nginx/sites-available/truckcenter /etc/nginx/sites-enabled/truckcenter
+sudo nginx -t && sudo systemctl reload nginx
+```
+
 ## Notes
 - Migrations + seed run automatically on backend start (idempotent). Demo products can be moderated/removed
   from the admin panel.
