@@ -41,3 +41,6 @@ miniapp/.vite/
 # DB dumps
 *.sqlite3
 *.db
+
+# TS build cache
+*.tsbuildinfo
