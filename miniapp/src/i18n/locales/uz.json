@@ -109,6 +109,7 @@
   "cart": {
     "title": "Savat",
     "empty": "Savatingiz bo‘sh",
+    "emptyHint": "Katalogdan ehtiyot qism qo‘shing — ular shu yerda ko‘rinadi",
     "subtotal": "Mahsulotlar summasi",
     "delivery": "Yetkazib berish",
     "total": "Jami",

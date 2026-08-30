@@ -7,6 +7,7 @@ import type { Category, Product, TruckBrand } from "@/api/types";
 import { mediaUrl } from "@/api/client";
 import { Icon } from "@/components/Icon";
 import { PageHeader } from "@/components/PageHeader";
+import { SelectSheet } from "@/components/SelectSheet";
 import { Loader, useToast } from "@/components/ui";
 
 const EMPTY = {
@@ -112,25 +113,34 @@ export function SellerProductForm() {
       <div className="card card-pad mb">
         <div className="field">
           <label>{t("catalog.category")} *</label>
-          <select className="select" value={form.category_id} onChange={(e) => set("category_id", Number(e.target.value))}>
-            <option value={0}>—</option>
-            {flatCats.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-          </select>
+          <SelectSheet
+            icon="grid"
+            title={t("catalog.category")}
+            value={form.category_id || ""}
+            onChange={(v) => set("category_id", Number(v) || 0)}
+            options={flatCats.map((c) => ({ value: c.id, label: c.name }))}
+          />
         </div>
         <div className="row" style={{ gap: 10 }}>
-          <div className="field" style={{ flex: 1 }}>
+          <div className="field" style={{ flex: 1, minWidth: 0 }}>
             <label>{t("catalog.brand")}</label>
-            <select className="select" value={brandId} onChange={(e) => { setBrandId(e.target.value ? Number(e.target.value) : ""); setModelId(""); }}>
-              <option value="">—</option>
-              {brands.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
-            </select>
+            <SelectSheet
+              icon="truck"
+              title={t("catalog.brand")}
+              value={brandId}
+              onChange={(v) => { setBrandId(v === "" ? "" : Number(v)); setModelId(""); }}
+              options={[{ value: "" as const, label: "—" }, ...brands.map((b) => ({ value: b.id, label: b.name }))]}
+            />
           </div>
-          <div className="field" style={{ flex: 1 }}>
+          <div className="field" style={{ flex: 1, minWidth: 0 }}>
             <label>{t("catalog.model")}</label>
-            <select className="select" value={modelId} onChange={(e) => setModelId(e.target.value ? Number(e.target.value) : "")} disabled={!brandId}>
-              <option value="">—</option>
-              {models.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
-            </select>
+            <SelectSheet
+              icon="settings"
+              title={t("catalog.model")}
+              value={modelId}
+              onChange={(v) => setModelId(v === "" ? "" : Number(v))}
+              options={[{ value: "" as const, label: "—" }, ...models.map((m) => ({ value: m.id, label: m.name }))]}
+            />
           </div>
         </div>
         <div className="field" style={{ marginBottom: 0 }}><label>{t("seller.products")} (RU) *</label><input className="input" value={form.name_ru} onChange={(e) => set("name_ru", e.target.value)} /></div>

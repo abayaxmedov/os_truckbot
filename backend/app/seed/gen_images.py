@@ -29,6 +29,8 @@ def frame(inner: str) -> str:
       <stop offset="1" stop-color="#153259" stop-opacity="0"/>
     </radialGradient>
   </defs>
+  <!-- Light tile is intentional: these stand in for product photos, which read as
+       light images in both themes (same as any photo-based catalog). -->
   <rect width="400" height="400" fill="url(#bg)"/>
   <ellipse cx="200" cy="322" rx="118" ry="24" fill="url(#sh)"/>
   <g fill="none" stroke="{ST}" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">

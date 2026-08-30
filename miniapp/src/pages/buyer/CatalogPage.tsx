@@ -6,6 +6,7 @@ import * as api from "@/api";
 import type { Category, ProductListItem, TruckBrand } from "@/api/types";
 import { Icon } from "@/components/Icon";
 import { ProductCard } from "@/components/ProductCard";
+import { SelectSheet } from "@/components/SelectSheet";
 import { SkeletonGrid } from "@/components/Skeleton";
 import { Empty } from "@/components/ui";
 
@@ -102,19 +103,27 @@ export function CatalogPage() {
       </div>
 
       <div className="row mb" style={{ gap: 10 }}>
-        <select className="select" value={brandId ?? ""} onChange={(e) => setBrandId(e.target.value ? Number(e.target.value) : undefined)}>
-          <option value="">{t("catalog.brand")}: {t("common.all")}</option>
-          {brands.map((b) => (
-            <option key={b.id} value={b.id}>{b.name}</option>
-          ))}
-        </select>
-        <select className="select" value={sort} onChange={(e) => setSort(e.target.value)}>
-          {SORTS.map((s) => (
-            <option key={s} value={s}>
-              {t(`catalog.sort${s === "new" ? "New" : s === "price_asc" ? "PriceAsc" : s === "price_desc" ? "PriceDesc" : "Popular"}`)}
-            </option>
-          ))}
-        </select>
+        <SelectSheet
+          icon="truck"
+          title={t("catalog.brand")}
+          placeholder={`${t("catalog.brand")}: ${t("common.all")}`}
+          value={brandId ?? ""}
+          onChange={(v) => setBrandId(v === "" ? undefined : Number(v))}
+          options={[
+            { value: "" as const, label: t("common.all") },
+            ...brands.map((b) => ({ value: b.id, label: b.name })),
+          ]}
+        />
+        <SelectSheet
+          icon="sliders"
+          title={t("catalog.sort")}
+          value={sort}
+          onChange={(v) => setSort(String(v))}
+          options={SORTS.map((s) => ({
+            value: s as string,
+            label: t(`catalog.sort${s === "new" ? "New" : s === "price_asc" ? "PriceAsc" : s === "price_desc" ? "PriceDesc" : "Popular"}`),
+          }))}
+        />
       </div>
 
       {loading && page === 1 ? (

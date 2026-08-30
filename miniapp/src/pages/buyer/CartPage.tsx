@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -10,6 +10,7 @@ import { QtyStepper } from "@/components/QtyStepper";
 import { SkeletonCards } from "@/components/Skeleton";
 import { Empty } from "@/components/ui";
 import { formatMoney } from "@/lib/format";
+import { hasMainButton, useMainButton } from "@/lib/useMainButton";
 import { useCart } from "@/store/cart";
 
 export function CartPage() {
@@ -26,18 +27,23 @@ export function CartPage() {
     refresh().finally(() => setLoading(false));
   }, [refresh]);
 
+  const goCheckout = useCallback(() => nav("/checkout"), [nav]);
+  useMainButton(`${t("cart.checkout")} · ${formatMoney(subtotal)}`, goCheckout, {
+    visible: items.length > 0,
+  });
+
   return (
     <div>
       <PageHeader title={t("cart.title")} subtitle={items.length > 0 ? `${count} ${t("orders.items")}` : undefined} />
       {loading ? (
         <SkeletonCards count={3} height={92} />
       ) : items.length === 0 ? (
-        <>
-          <Empty icon="cart" text={t("cart.empty")} />
-          <button className="btn btn-block" onClick={() => nav("/catalog")}>
-            {t("cart.goShopping")}
+        <div className="empty-wrap">
+          <Empty icon="cart" text={t("cart.empty")} hint={t("cart.emptyHint")} />
+          <button className="btn btn-lg" style={{ minWidth: 220 }} onClick={() => nav("/catalog")}>
+            <Icon name="grid" size={18} /> {t("cart.goShopping")}
           </button>
-        </>
+        </div>
       ) : (
         <>
           <div className="stack">
@@ -66,11 +72,13 @@ export function CartPage() {
             <div className="between"><span className="muted">{t("cart.subtotal")}</span><span className="bold tnum">{formatMoney(subtotal)} {t("common.sum")}</span></div>
           </div>
 
-          <div className="action-bar">
-            <button className="btn btn-lg btn-block" onClick={() => nav("/checkout")}>
-              <Icon name="check" size={18} /> {t("cart.checkout")} · <span className="tnum">{formatMoney(subtotal)}</span> {t("common.sum")}
-            </button>
-          </div>
+          {!hasMainButton() && (
+            <div className="action-bar">
+              <button className="btn btn-lg btn-block" onClick={goCheckout}>
+                <Icon name="check" size={18} /> {t("cart.checkout")} · <span className="tnum">{formatMoney(subtotal)}</span> {t("common.sum")}
+              </button>
+            </div>
+          )}
         </>
       )}
     </div>

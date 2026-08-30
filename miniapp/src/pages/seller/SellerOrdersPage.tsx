@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import * as api from "@/api";
 import { Icon } from "@/components/Icon";
 import { PageHeader } from "@/components/PageHeader";
+import { SelectSheet } from "@/components/SelectSheet";
 import { SkeletonCards } from "@/components/Skeleton";
 import { Empty, StatusBadge, useToast } from "@/components/ui";
 import { useApi } from "@/lib/useApi";
@@ -58,9 +59,13 @@ export function SellerOrdersPage() {
               </div>
               <div className="field mt" style={{ marginBottom: 0 }}>
                 <label>{t("seller.changeStatus")}</label>
-                <select className="select" value={o.status} onChange={(e) => change(o.id, e.target.value)}>
-                  {STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}
-                </select>
+                <SelectSheet
+                  icon="box"
+                  title={t("seller.changeStatus")}
+                  value={o.status}
+                  onChange={(v) => change(o.id, String(v))}
+                  options={STATUSES.map((s) => ({ value: s, label: t(`status.${s}`) }))}
+                />
               </div>
             </div>
           ))}

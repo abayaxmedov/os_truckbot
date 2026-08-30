@@ -87,6 +87,8 @@
     --accent: #f22a42;
     --accent-press: #d81f36;
     --accent-tint: rgba(242, 42, 66, 0.18);
+    --danger: #f22a42;
+    --danger-tint: rgba(242, 42, 66, 0.18);
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
     --shadow-md: 0 8px 24px -8px rgba(0, 0, 0, 0.6);
     --shadow-lg: 0 20px 48px -12px rgba(0, 0, 0, 0.7);
@@ -103,13 +105,19 @@
   --muted: #6f7a90;
   --border: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.16);
-  --brand: #3a63ec;
-  --brand-press: #2b4fd6;
-  --brand-tint: rgba(58, 99, 236, 0.16);
+  /* Keep the TRUCK CENTER navy identity in dark (lifted for contrast, not generic blue). */
+  --brand: #3d6aad;
+  --brand-press: #2f5591;
+  --brand-tint: rgba(61, 106, 173, 0.2);
+  --accent: #f22a42;
+  --accent-press: #d81f36;
+  --accent-tint: rgba(242, 42, 66, 0.18);
+  --danger: #f22a42;
+  --danger-tint: rgba(242, 42, 66, 0.18);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 8px 24px -8px rgba(0, 0, 0, 0.6);
   --shadow-lg: 0 20px 48px -12px rgba(0, 0, 0, 0.7);
-  --shadow-brand: 0 8px 22px -6px rgba(58, 99, 236, 0.5);
+  --shadow-brand: 0 8px 22px -6px rgba(61, 106, 173, 0.5);
 }
 
 /* ---- Reset / base ---- */
@@ -185,9 +193,13 @@ img {
   display: flex;
   flex-direction: column;
   position: relative;
+  width: 100%;
+  /* Contain horizontal scrollers (chips/hscroll) so they can't widen the page. */
+  overflow-x: clip;
 }
 .page {
   flex: 1;
+  min-width: 0;
   padding: 14px 16px calc(var(--tabbar-h) + 20px + env(safe-area-inset-bottom));
   animation: fade-in-up 0.32s var(--ease-out);
 }
@@ -495,6 +507,14 @@ img {
   padding: 2px 0 6px;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  /* Never let the scroller contribute to page width. */
+  max-width: 100%;
+  min-width: 0;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+}
+.chips > * {
+  scroll-snap-align: start;
 }
 .chips::-webkit-scrollbar {
   display: none;
@@ -578,6 +598,10 @@ img {
   background: var(--surface-2);
   color: var(--text-2);
 }
+.badge-accent {
+  background: var(--accent-tint);
+  color: var(--accent);
+}
 .badge-brand {
   background: var(--brand-tint);
   color: var(--brand);
@@ -597,8 +621,10 @@ img {
 /* ---- Product grid ---- */
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* minmax(0,…) keeps columns equal even when content is wide (prevents overflow). */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+  align-items: stretch;
 }
 .product-card {
   background: var(--surface);
@@ -671,10 +697,21 @@ img {
   color: var(--muted);
 }
 .product-card .pc-price {
-  font-size: 16px;
+  font-size: 15.5px;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   margin-top: auto;
+  white-space: nowrap;
+  min-width: 0;
+  line-height: 1.2;
+}
+/* Currency sits under the amount so long prices never truncate or collide. */
+.product-card .pc-price small {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0;
 }
 .product-card .pc-price small {
   font-size: 11px;
@@ -690,7 +727,7 @@ img {
 /* Category grid */
 .cat-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 .cat-tile {
@@ -750,7 +787,8 @@ img {
   width: 26px;
   height: 3px;
   border-radius: 0 0 4px 4px;
-  background: var(--brand);
+  /* Logo's red as a subtle accent mark on the active tab. */
+  background: var(--accent);
 }
 .tab-icon {
   position: relative;
@@ -775,14 +813,34 @@ img {
 }
 
 /* ---- Sticky action bar ---- */
+/* Sticky CTA bar. Needs an opaque surface + top fade, otherwise page content
+   scrolls visibly between the buttons. */
 .action-bar {
   position: sticky;
-  bottom: calc(12px + env(safe-area-inset-bottom));
-  margin-top: 18px;
+  bottom: 0;
+  margin-top: 22px;
+  margin-inline: -16px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: 10px;
   z-index: 10;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+.action-bar::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 20px;
+  background: linear-gradient(to top, var(--bg), transparent);
+  pointer-events: none;
+}
+/* Inside the tabbed layout the bar sits above the tab bar. */
+.page:not(.page-plain) .action-bar {
+  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
 }
 
 /* ---- Sheet ---- */
@@ -926,6 +984,15 @@ img {
 }
 
 /* ---- Empty state ---- */
+/* Centers an empty state + its CTA in the free space instead of leaving a void. */
+.empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 58vh;
+}
 .empty-state {
   text-align: center;
   color: var(--muted);
@@ -1029,9 +1096,16 @@ img {
   overflow-x: auto;
   padding-bottom: 6px;
   scrollbar-width: none;
-  margin: 0 -16px;
-  padding-left: 16px;
-  padding-right: 16px;
+  /* Bleed to the screen edges without widening the page. */
+  margin-inline: -16px;
+  padding-inline: 16px;
+  max-width: calc(100% + 32px);
+  min-width: 0;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+}
+.hscroll > * {
+  scroll-snap-align: start;
 }
 .hscroll::-webkit-scrollbar {
   display: none;
@@ -1084,6 +1158,48 @@ img {
   50% {
     transform: scale(1.25);
   }
+}
+
+/* ---- Select trigger (opens a bottom sheet instead of a native <select>) ---- */
+.select-trigger {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-width: 0;
+  padding: 12px 13px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--dur), box-shadow var(--dur);
+}
+.select-trigger:active {
+  border-color: var(--brand);
+}
+.select-trigger .st-icon {
+  color: var(--muted);
+  flex: none;
+}
+.select-trigger .st-value,
+.select-trigger .st-placeholder {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.select-trigger .st-placeholder {
+  color: var(--muted);
+}
+.select-trigger .st-chevron {
+  color: var(--muted);
+  flex: none;
 }
 
 /* ---- Add-to-cart control ---- */

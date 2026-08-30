@@ -6,6 +6,7 @@ import * as api from "@/api";
 import { Icon } from "@/components/Icon";
 import { PageHeader } from "@/components/PageHeader";
 import { useToast } from "@/components/ui";
+import { hasMainButton, useMainButton } from "@/lib/useMainButton";
 import { useAuth } from "@/store/auth";
 import { useCart } from "@/store/cart";
 import { getLocation, haptic } from "@/telegram/telegram";
@@ -71,6 +72,8 @@ export function CheckoutPage() {
       setSubmitting(false);
     }
   };
+
+  useMainButton(t("checkout.placeOrder"), submit, { progress: submitting, enabled: !submitting });
 
   return (
     <div>
@@ -145,11 +148,13 @@ export function CheckoutPage() {
         })}
       </div>
 
-      <div className="action-bar">
-        <button className="btn btn-lg btn-block" disabled={submitting} onClick={submit}>
-          {submitting ? <span className="spin" /> : <Icon name="check" size={18} />} {t("checkout.placeOrder")}
-        </button>
-      </div>
+      {!hasMainButton() && (
+        <div className="action-bar">
+          <button className="btn btn-lg btn-block" disabled={submitting} onClick={submit}>
+            {submitting ? <span className="spin" /> : <Icon name="check" size={18} />} {t("checkout.placeOrder")}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
