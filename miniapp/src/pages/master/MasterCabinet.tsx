@@ -1,8 +1,8 @@
+import { Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import * as api from "@/api";
 import { Icon } from "@/components/Icon";
-import { MasterRegisterForm } from "@/components/MasterRegisterForm";
 import { PageHeader } from "@/components/PageHeader";
 import { Loader, StatusBadge } from "@/components/ui";
 import { useApi } from "@/lib/useApi";
@@ -10,16 +10,12 @@ import { formatMoney } from "@/lib/format";
 import { useAuth } from "@/store/auth";
 
 export function MasterCabinet() {
-  const { t } = useTranslation();
   const user = useAuth((s) => s.user);
 
+  // The cabinet is only for masters. Role is chosen once at first run, so an
+  // onboarded buyer who reaches /master by URL is sent home (no "become master").
   if (!user?.is_master) {
-    return (
-      <div>
-        <PageHeader title={t("master.register")} />
-        <MasterRegisterForm />
-      </div>
-    );
+    return <Navigate to="/" replace />;
   }
   return <MasterHome />;
 }

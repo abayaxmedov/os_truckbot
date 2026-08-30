@@ -3,6 +3,7 @@ from __future__ import annotations
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.fsm.storage.memory import MemoryStorage
 
 from app.core.config import settings
 
@@ -26,7 +27,7 @@ def get_bot() -> Bot | None:
 def get_dispatcher() -> Dispatcher:
     global _dp
     if _dp is None:
-        _dp = Dispatcher()
+        _dp = Dispatcher(storage=MemoryStorage())
         from app.bot.handlers import router  # local import avoids circular import
 
         _dp.include_router(router)

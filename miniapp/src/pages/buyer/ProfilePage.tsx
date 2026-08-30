@@ -97,19 +97,23 @@ export function ProfilePage() {
         </button>
       </div>
 
-      <div className="section-title">{t("master.cabinet")}</div>
-      <div className="list">
-        <button className="list-row" onClick={() => nav("/master")}>
-          <span className="icon-chip" style={{ width: 34, height: 34 }}><Icon name="wrench" size={17} /></span>
-          <span>{user?.is_master ? t("master.cabinet") : t("master.becomeMaster")}</span>
-          <span className="chevron">
-            {user?.is_master && user.master ? (
-              <span className="badge badge-brand tnum">{formatMoney(user.master.balance)} {t("common.sum")}</span>
-            ) : null}
-            <Icon name="chevron" size={16} />
-          </span>
-        </button>
-      </div>
+      {user?.is_master && (
+        <>
+          <div className="section-title">{t("master.cabinet")}</div>
+          <div className="list">
+            <button className="list-row" onClick={() => nav("/master")}>
+              <span className="icon-chip" style={{ width: 34, height: 34 }}><Icon name="wrench" size={17} /></span>
+              <span>{t("master.cabinet")}</span>
+              <span className="chevron">
+                {user.master ? (
+                  <span className="badge badge-brand tnum">{formatMoney(user.master.balance)} {t("common.sum")}</span>
+                ) : null}
+                <Icon name="chevron" size={16} />
+              </span>
+            </button>
+          </div>
+        </>
+      )}
 
       <div className="section-title">{t("nav.seller")} / {t("nav.admin")}</div>
       <div className="list">

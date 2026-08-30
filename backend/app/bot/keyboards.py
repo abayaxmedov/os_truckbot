@@ -3,6 +3,8 @@ from __future__ import annotations
 from aiogram.types import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
+    KeyboardButton,
+    ReplyKeyboardMarkup,
     WebAppInfo,
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder
@@ -37,23 +39,39 @@ def open_marketplace_kb(lang: str = "ru", path: str = "") -> InlineKeyboardMarku
 
 
 def start_kb(lang: str = "ru") -> InlineKeyboardMarkup | None:
-    """Start menu: open the marketplace, or register as a master (usta)."""
-    if not _can_webapp():
-        return None
+    """Returning-user menu: just open the marketplace (role chosen once at onboarding)."""
+    return open_marketplace_kb(lang)
+
+
+def role_choice_kb(lang: str = "ru") -> InlineKeyboardMarkup:
+    """First-run role choice: register as a regular buyer, or as a master (usta).
+
+    Buyer is a callback (the bot then asks for a phone via contact-share);
+    master is a WebApp button that opens the Mini App registration form.
+    """
     builder = InlineKeyboardBuilder()
     builder.row(
-        InlineKeyboardButton(
-            text=t("btn_open_marketplace", lang),
-            web_app=WebAppInfo(url=_miniapp_url()),
-        )
+        InlineKeyboardButton(text=t("btn_role_buyer", lang), callback_data="role:buyer")
     )
-    builder.row(
-        InlineKeyboardButton(
-            text=t("btn_become_master", lang),
-            web_app=WebAppInfo(url=_miniapp_url("master")),
+    master_url = _miniapp_url("master")
+    if _can_webapp():
+        master_btn = InlineKeyboardButton(
+            text=t("btn_become_master", lang), web_app=WebAppInfo(url=master_url)
         )
-    )
+    else:
+        # Dev fallback (non-HTTPS): plain link instead of a WebApp button.
+        master_btn = InlineKeyboardButton(text=t("btn_become_master", lang), url=master_url)
+    builder.row(master_btn)
     return builder.as_markup()
+
+
+def share_phone_kb(lang: str = "ru") -> ReplyKeyboardMarkup:
+    """Reply keyboard with a single 'share my phone number' contact button."""
+    return ReplyKeyboardMarkup(
+        keyboard=[[KeyboardButton(text=t("btn_share_phone", lang), request_contact=True)]],
+        resize_keyboard=True,
+        one_time_keyboard=True,
+    )
 
 
 def open_order_kb(order_id: int, lang: str = "ru") -> InlineKeyboardMarkup | None:

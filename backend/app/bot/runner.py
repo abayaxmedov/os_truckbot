@@ -3,6 +3,8 @@ from __future__ import annotations
 import asyncio
 import logging
 
+from aiogram.types import BotCommand
+
 from app.bot.instance import close_bot, get_bot, get_dispatcher
 from app.core.config import settings
 
@@ -22,6 +24,14 @@ async def start_bot() -> None:
     if bot is None:
         logger.warning("BOT_TOKEN not set — Telegram bot disabled (API still runs).")
         return
+
+    # Persistent command menu (so /language is always reachable).
+    await bot.set_my_commands(
+        [
+            BotCommand(command="start", description="Boshlash / Начать"),
+            BotCommand(command="language", description="Til / Язык"),
+        ]
+    )
 
     dp = get_dispatcher()
     if settings.bot_mode == "webhook":

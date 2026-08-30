@@ -28,6 +28,9 @@ def serialize_master(mp: MasterProfile) -> MasterOut:
 
 @router.post("/register", response_model=MasterOut)
 async def register(payload: MasterRegister, session: SessionDep, user: CurrentUser) -> MasterOut:
+    if user.onboarded and user.master_profile is None:
+        # Role is chosen once at first run; an onboarded buyer cannot become a master later.
+        raise HTTPException(status_code=403, detail="role_locked")
     mp = await register_or_update_master(
         session,
         user,
