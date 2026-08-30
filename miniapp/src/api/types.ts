@@ -190,6 +190,8 @@ export interface Order {
   city: string;
   address: string;
   comment: string;
+  latitude: number | null;
+  longitude: number | null;
   delivery_method: string;
   payment_method: string;
   payment_status: string;
@@ -218,6 +220,8 @@ export interface SellerOrderRow {
   city: string;
   address: string;
   comment: string;
+  latitude: number | null;
+  longitude: number | null;
   delivery_method: string;
   subtotal: number;
   commission_amount: number;

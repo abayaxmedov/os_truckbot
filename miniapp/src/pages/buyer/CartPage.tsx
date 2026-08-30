@@ -1,8 +1,7 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import * as api from "@/api";
-import type { Cart } from "@/api/types";
 import { mediaUrl } from "@/api/client";
 import { Icon } from "@/components/Icon";
 import { Placeholder } from "@/components/Placeholder";
@@ -10,32 +9,29 @@ import { PageHeader } from "@/components/PageHeader";
 import { QtyStepper } from "@/components/QtyStepper";
 import { SkeletonCards } from "@/components/Skeleton";
 import { Empty } from "@/components/ui";
-import { useApi } from "@/lib/useApi";
 import { formatMoney } from "@/lib/format";
 import { useCart } from "@/store/cart";
 
 export function CartPage() {
   const { t } = useTranslation();
   const nav = useNavigate();
-  const cartStore = useCart();
-  const { data, loading, setData } = useApi(() => api.getCart(), []);
+  const items = useCart((s) => s.items);
+  const subtotal = useCart((s) => s.subtotal);
+  const count = useCart((s) => s.count);
+  const refresh = useCart((s) => s.refresh);
+  const setQty = useCart((s) => s.setQty);
+  const [loading, setLoading] = useState(true);
 
-  const apply = (cart: Cart) => {
-    setData(cart);
-    cartStore.setCount(cart.count);
-  };
-
-  const setQty = async (itemId: number, qty: number) => {
-    if (qty < 1) apply(await api.removeCartItem(itemId));
-    else apply(await api.updateCartItem(itemId, qty));
-  };
+  useEffect(() => {
+    refresh().finally(() => setLoading(false));
+  }, [refresh]);
 
   return (
     <div>
-      <PageHeader title={t("cart.title")} subtitle={data && data.items.length > 0 ? `${data.count} ${t("orders.items")}` : undefined} />
+      <PageHeader title={t("cart.title")} subtitle={items.length > 0 ? `${count} ${t("orders.items")}` : undefined} />
       {loading ? (
         <SkeletonCards count={3} height={92} />
-      ) : !data || data.items.length === 0 ? (
+      ) : items.length === 0 ? (
         <>
           <Empty icon="cart" text={t("cart.empty")} />
           <button className="btn btn-block" onClick={() => nav("/catalog")}>
@@ -45,7 +41,7 @@ export function CartPage() {
       ) : (
         <>
           <div className="stack">
-            {data.items.map((it) => (
+            {items.map((it) => (
               <div className="card" key={it.id} style={{ padding: 10, display: "flex", gap: 12 }}>
                 <div onClick={() => nav(`/product/${it.product_id}`)} style={{ flex: "0 0 68px", height: 68, borderRadius: 10, overflow: "hidden" }}>
                   {it.image ? (
@@ -67,12 +63,12 @@ export function CartPage() {
           </div>
 
           <div className="card card-pad mt">
-            <div className="between"><span className="muted">{t("cart.subtotal")}</span><span className="bold tnum">{formatMoney(data.subtotal)} {t("common.sum")}</span></div>
+            <div className="between"><span className="muted">{t("cart.subtotal")}</span><span className="bold tnum">{formatMoney(subtotal)} {t("common.sum")}</span></div>
           </div>
 
           <div className="action-bar">
             <button className="btn btn-lg btn-block" onClick={() => nav("/checkout")}>
-              <Icon name="check" size={18} /> {t("cart.checkout")} · <span className="tnum">{formatMoney(data.subtotal)}</span> {t("common.sum")}
+              <Icon name="check" size={18} /> {t("cart.checkout")} · <span className="tnum">{formatMoney(subtotal)}</span> {t("common.sum")}
             </button>
           </div>
         </>

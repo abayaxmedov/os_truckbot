@@ -56,6 +56,8 @@ export function OrderDetailPage() {
         {infoRow("user", t("checkout.name"), order.contact_name)}
         {infoRow("phone", t("checkout.phone"), order.phone)}
         {(order.city || order.address) && infoRow("pin", t("checkout.address"), `${order.city} ${order.address}`)}
+        {order.latitude != null && order.longitude != null && infoRow("pin", t("checkout.location"),
+          <a href={`https://maps.google.com/?q=${order.latitude},${order.longitude}`} target="_blank" rel="noreferrer" style={{ color: "var(--brand)", fontWeight: 600 }}>{t("checkout.openMap")}</a>)}
         {infoRow("card", t("orders.payment"), <StatusBadge status={order.payment_status} />)}
       </div>
 

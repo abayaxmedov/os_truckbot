@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import * as api from "@/api";
 import { mediaUrl } from "@/api/client";
+import { CartControl } from "@/components/CartControl";
 import { Icon } from "@/components/Icon";
 import { Placeholder } from "@/components/Placeholder";
 import { ProductCard } from "@/components/ProductCard";
@@ -33,12 +34,10 @@ export function ProductPage() {
 
   if (loading || !p) return <Loader />;
 
-  const addToCart = async (buy = false) => {
-    await api.addToCart(p.id, 1);
-    await cart.refresh();
+  const buyNow = async () => {
+    if (cart.qtyOf(p.id) === 0) await cart.add(p.id);
     haptic("success");
-    if (buy) nav("/cart");
-    else toast.show(t("product.added"));
+    nav("/cart");
   };
 
   const sendQuestion = async () => {
@@ -147,10 +146,8 @@ export function ProductPage() {
 
       <div className="action-bar">
         <div className="row" style={{ gap: 10 }}>
-          <button className="btn btn-block" disabled={!p.in_stock} onClick={() => addToCart(false)}>
-            <Icon name="cart" size={18} /> {t("product.addToCart")}
-          </button>
-          <button className="btn btn-outline btn-block" disabled={!p.in_stock} onClick={() => addToCart(true)}>
+          <CartControl productId={p.id} inStock={p.in_stock} stockQty={p.stock_qty} variant="page" />
+          <button className="btn btn-outline btn-block" disabled={!p.in_stock} onClick={buyNow}>
             {t("product.buyNow")}
           </button>
         </div>

@@ -3,7 +3,7 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, Enum, ForeignKey, Integer, Numeric, String, Text
+from sqlalchemy import Boolean, Enum, Float, ForeignKey, Integer, Numeric, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base, TimestampMixin
@@ -28,6 +28,9 @@ class Order(Base, TimestampMixin):
     phone: Mapped[str] = mapped_column(String(32))
     city: Mapped[str] = mapped_column(String(128), default="")
     address: Mapped[str] = mapped_column(String(512), default="")
+    # Delivery location (sent from Telegram/geolocation at checkout)
+    latitude: Mapped[float | None] = mapped_column(Float, nullable=True)
+    longitude: Mapped[float | None] = mapped_column(Float, nullable=True)
     delivery_method: Mapped[DeliveryMethod] = mapped_column(
         Enum(DeliveryMethod, native_enum=False, length=16), default=DeliveryMethod.delivery
     )

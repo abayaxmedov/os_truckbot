@@ -50,6 +50,10 @@ export function Layout() {
 /** Full-screen layout without the tab bar; shows the Telegram BackButton. */
 export function PlainLayout() {
   useBackButton();
+  const refresh = useCart((s) => s.refresh);
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
   return (
     <div className="app">
       <div className="page page-plain">

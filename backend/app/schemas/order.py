@@ -11,6 +11,8 @@ class OrderCreate(BaseModel):
     city: str = ""
     address: str = ""
     comment: str = ""
+    latitude: float | None = None
+    longitude: float | None = None
     delivery_method: DeliveryMethod = DeliveryMethod.delivery
     payment_method: PaymentProvider = PaymentProvider.cash
 
@@ -47,6 +49,8 @@ class OrderOut(BaseModel):
     city: str = ""
     address: str = ""
     comment: str = ""
+    latitude: float | None = None
+    longitude: float | None = None
     delivery_method: str
     payment_method: str
     payment_status: str
@@ -78,6 +82,8 @@ class SellerOrderRow(BaseModel):
     city: str = ""
     address: str = ""
     comment: str = ""
+    latitude: float | None = None
+    longitude: float | None = None
     delivery_method: str = "delivery"
     subtotal: float
     commission_amount: float

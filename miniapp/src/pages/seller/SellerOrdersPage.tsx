@@ -38,6 +38,12 @@ export function SellerOrdersPage() {
               </div>
               <div className="caption row" style={{ gap: 6 }}><Icon name="user" size={13} /> {o.buyer_name} · {o.phone}</div>
               {(o.city || o.address) && <div className="caption row mt-sm" style={{ gap: 6 }}><Icon name="pin" size={13} /> {o.city} {o.address}</div>}
+              {o.latitude != null && o.longitude != null && (
+                <a className="row mt-sm" style={{ gap: 6, color: "var(--brand)", fontWeight: 600, fontSize: 13 }}
+                  href={`https://maps.google.com/?q=${o.latitude},${o.longitude}`} target="_blank" rel="noreferrer">
+                  <Icon name="pin" size={14} /> {t("checkout.openMap")}
+                </a>
+              )}
               <div className="mt-sm" style={{ borderTop: "1px solid var(--border)", paddingTop: 8 }}>
                 {o.items.map((it) => (
                   <div className="between" key={it.id} style={{ padding: "3px 0" }}>

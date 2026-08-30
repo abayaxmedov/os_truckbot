@@ -52,6 +52,8 @@ async def checkout(payload: OrderCreate, session: SessionDep, user: CurrentUser)
                 city=payload.city,
                 address=payload.address,
                 comment=payload.comment,
+                latitude=payload.latitude,
+                longitude=payload.longitude,
                 delivery_method=payload.delivery_method,
                 payment_method=payload.payment_method,
             ),

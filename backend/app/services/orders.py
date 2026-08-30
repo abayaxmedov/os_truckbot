@@ -27,6 +27,8 @@ class CheckoutInput:
     city: str = ""
     address: str = ""
     comment: str = ""
+    latitude: float | None = None
+    longitude: float | None = None
     delivery_method: DeliveryMethod = DeliveryMethod.delivery
     payment_method: PaymentProvider = PaymentProvider.cash
 
@@ -81,6 +83,8 @@ async def create_order(session: AsyncSession, user: User, data: CheckoutInput) -
         city=data.city,
         address=data.address,
         comment=data.comment,
+        latitude=data.latitude,
+        longitude=data.longitude,
         delivery_method=data.delivery_method,
         payment_method=data.payment_method,
         delivery_cost=delivery_cost,

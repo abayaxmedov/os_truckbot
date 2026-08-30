@@ -88,6 +88,8 @@ export interface CheckoutData {
   city?: string;
   address?: string;
   comment?: string;
+  latitude?: number | null;
+  longitude?: number | null;
   payment_method?: string;
 }
 export const checkout = (data: CheckoutData) => request<Order>("/orders", { body: data });

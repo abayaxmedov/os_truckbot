@@ -135,3 +135,44 @@ export function setMainButton(
     mb.hideProgress();
   };
 }
+
+// ---- Location ----
+export interface Coords {
+  latitude: number;
+  longitude: number;
+}
+
+/** Get the user's location via Telegram LocationManager (Bot API 8.0+) or the
+ *  browser geolocation API. Resolves null if unavailable or denied. */
+export function getLocation(): Promise<Coords | null> {
+  return new Promise((resolve) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const lm = (getWebApp() as any)?.LocationManager;
+
+    const browser = () => {
+      if (!navigator.geolocation) return resolve(null);
+      navigator.geolocation.getCurrentPosition(
+        (pos) => resolve({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
+        () => resolve(null),
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 },
+      );
+    };
+
+    if (lm && typeof lm.getLocation === "function") {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const read = () => lm.getLocation((loc: any) =>
+        resolve(loc && typeof loc.latitude === "number"
+          ? { latitude: loc.latitude, longitude: loc.longitude }
+          : null),
+      );
+      try {
+        if (lm.isInited) read();
+        else lm.init(read);
+      } catch {
+        browser();
+      }
+      return;
+    }
+    browser();
+  });
+}
