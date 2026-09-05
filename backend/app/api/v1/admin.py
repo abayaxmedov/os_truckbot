@@ -15,7 +15,7 @@ from app.models.catalog import Category
 from app.models.enums import PayoutStatus, ProductStatus, SellerStatus
 from app.models.master import MasterProfile, Payout
 from app.models.product import Product, ProductVehicle
-from app.models.setting import KEY_DEFAULT_COMMISSION
+from app.models.setting import KEY_DEFAULT_COMMISSION, KEY_SUPPORT_TELEGRAM
 from app.models.user import SellerProfile, User
 from app.schemas.admin import (
     AdminSellerOut,
@@ -29,6 +29,7 @@ from app.schemas.admin import (
     CategoryCreate,
     CategoryUpdate,
     CommissionUpdate,
+    SupportTelegramUpdate,
     ProductModerate,
     SellerCommissionUpdate,
     SellerStatusUpdate,
@@ -296,6 +297,17 @@ async def update_commission(
     if payload.default_percent is not None:
         await set_setting(session, KEY_DEFAULT_COMMISSION, str(payload.default_percent))
         await session.commit()
+    return Msg(detail="updated")
+
+
+@router.patch("/settings/support", response_model=Msg)
+async def update_support_telegram(
+    payload: SupportTelegramUpdate, session: SessionDep, admin: CurrentAdmin
+) -> Msg:
+    # Store the handle without a leading '@' so the client can build t.me links cleanly.
+    handle = payload.support_telegram.strip().lstrip("@")
+    await set_setting(session, KEY_SUPPORT_TELEGRAM, handle)
+    await session.commit()
     return Msg(detail="updated")
 
 

@@ -12,8 +12,15 @@ from app.models.enums import ProductStatus
 from app.models.product import Product
 from app.schemas.admin import BannerOut
 from app.schemas.product import ProductListItem
+from app.services.settings_service import get_support_telegram
 
 router = APIRouter(tags=["public"])
+
+
+@router.get("/settings", response_model=dict)
+async def public_settings(session: SessionDep) -> dict:
+    """Client-visible settings (no auth). Currently the support/admin Telegram handle."""
+    return {"support_telegram": await get_support_telegram(session)}
 
 
 @router.get("/banners", response_model=list[BannerOut])

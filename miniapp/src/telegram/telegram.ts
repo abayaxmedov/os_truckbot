@@ -15,6 +15,8 @@ interface TgWebApp {
   close: () => void;
   setHeaderColor?: (color: string) => void;
   setBackgroundColor?: (color: string) => void;
+  openTelegramLink?: (url: string) => void;
+  openLink?: (url: string, options?: Record<string, unknown>) => void;
   onEvent: (type: string, cb: () => void) => void;
   offEvent: (type: string, cb: () => void) => void;
   BackButton: { show: () => void; hide: () => void; onClick: (cb: () => void) => void; offClick: (cb: () => void) => void };
@@ -175,4 +177,15 @@ export function getLocation(): Promise<Coords | null> {
     }
     browser();
   });
+}
+
+/** Open a Telegram chat by @handle. Uses the native Mini App API when available,
+ *  falling back to a normal t.me link. */
+export function openTelegramHandle(handle: string): void {
+  const clean = handle.trim().replace(/^@/, "");
+  if (!clean) return;
+  const url = `https://t.me/${clean}`;
+  const wa = getWebApp();
+  if (wa?.openTelegramLink) wa.openTelegramLink(url);
+  else window.open(url, "_blank");
 }

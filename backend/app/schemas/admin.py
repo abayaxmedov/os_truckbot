@@ -27,6 +27,10 @@ class CommissionUpdate(BaseModel):
     default_percent: float | None = Field(default=None, ge=0, le=100)
 
 
+class SupportTelegramUpdate(BaseModel):
+    support_telegram: str = Field(default="", max_length=64)
+
+
 class SellerCommissionUpdate(BaseModel):
     commission_override: float | None = Field(default=None, ge=0, le=100)
 

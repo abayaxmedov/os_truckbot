@@ -165,6 +165,11 @@ export const deleteCategory = (id: number) => request(`/admin/categories/${id}`,
 export const getAdminSettings = () => request<Record<string, string>>("/admin/settings");
 export const setCommission = (default_percent: number) =>
   request("/admin/settings/commission", { method: "PATCH", body: { default_percent } });
+export const setSupportTelegram = (support_telegram: string) =>
+  request("/admin/settings/support", { method: "PATCH", body: { support_telegram } });
+
+// Public (no auth) — client-visible settings, e.g. the support/admin Telegram handle.
+export const getPublicSettings = () => request<{ support_telegram: string }>("/settings");
 export const getAdminBanners = () => request<Banner[]>("/admin/banners");
 export const createBanner = (data: unknown) => request<Banner>("/admin/banners", { body: data });
 export const updateBanner = (id: number, data: unknown) =>

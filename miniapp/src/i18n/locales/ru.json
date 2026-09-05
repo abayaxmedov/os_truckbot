@@ -51,7 +51,10 @@
     "sortPriceDesc": "Дороже",
     "sortPopular": "Популярные",
     "apply": "Применить",
-    "reset": "Сбросить"
+    "reset": "Сбросить",
+    "notFoundTitle": "Не нашли запчасть?",
+    "notFoundText": "Напишите админу — поможем найти нужную деталь",
+    "writeAdmin": "Написать админу"
   },
   "product": {
     "article": "Артикул",
@@ -218,6 +221,9 @@
     "approve": "Одобрить",
     "reject": "Отклонить",
     "defaultCommission": "Комиссия по умолчанию (%)",
+    "supportTelegram": "Telegram поддержки",
+    "supportTelegramLabel": "Username админа",
+    "supportTelegramHint": "Показывается в каталоге, когда по поиску ничего не найдено. Оставьте пустым, чтобы скрыть.",
     "addCategory": "Добавить категорию",
     "addBanner": "Добавить баннер",
     "addAnalogGroup": "Добавить группу аналогов",

@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     # Telegram
     bot_token: str = ""
     telegram_admin_ids: str = ""
+    support_telegram: str = ""  # default admin @username for "not found" contact (editable in admin panel)
     miniapp_url: str = "https://localhost:5173"
     bot_mode: str = "polling"  # "polling" | "webhook"
     public_base_url: str = "http://localhost:8000"

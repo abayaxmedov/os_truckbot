@@ -8,6 +8,7 @@ from app.db.base import Base, TimestampMixin
 # Well-known setting keys
 KEY_DEFAULT_COMMISSION = "default_commission_percent"
 KEY_DEFAULT_DELIVERY_COST = "default_delivery_cost"
+KEY_SUPPORT_TELEGRAM = "support_telegram"  # admin @username shown when search finds nothing
 
 
 class Setting(Base, TimestampMixin):

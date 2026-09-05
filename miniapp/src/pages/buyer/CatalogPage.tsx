@@ -9,6 +9,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { SelectSheet } from "@/components/SelectSheet";
 import { SkeletonGrid } from "@/components/Skeleton";
 import { Empty } from "@/components/ui";
+import { haptic, openTelegramHandle } from "@/telegram/telegram";
 
 const SORTS = ["new", "price_asc", "price_desc", "popular"] as const;
 
@@ -31,10 +32,12 @@ export function CatalogPage() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [support, setSupport] = useState("");
 
   useEffect(() => {
     api.getCategories().then(setCategories).catch(() => {});
     api.getBrands().then(setBrands).catch(() => {});
+    api.getPublicSettings().then((s) => setSupport(s.support_telegram || "")).catch(() => {});
   }, []);
 
   useEffect(() => setPage(1), [q, categoryId, brandId, sort]);
@@ -129,7 +132,21 @@ export function CatalogPage() {
       {loading && page === 1 ? (
         <SkeletonGrid count={6} />
       ) : items.length === 0 ? (
-        <Empty icon="search" text={t("common.empty")} />
+        support ? (
+          <div className="empty-wrap">
+            <span className="icon-chip" style={{ width: 60, height: 60, background: "var(--accent-tint)", color: "var(--accent)" }}>
+              <Icon name="search" size={28} />
+            </span>
+            <div className="bold" style={{ fontSize: 17, marginTop: 12 }}>{t("catalog.notFoundTitle")}</div>
+            <div className="muted small" style={{ textAlign: "center", maxWidth: 280, marginTop: 4 }}>{t("catalog.notFoundText")}</div>
+            <button className="btn btn-lg mt" style={{ minWidth: 240 }} onClick={() => { haptic("light"); openTelegramHandle(support); }}>
+              <Icon name="message" size={18} /> {t("catalog.writeAdmin")}
+            </button>
+            <div className="caption mt-sm">@{support}</div>
+          </div>
+        ) : (
+          <Empty icon="search" text={t("common.empty")} />
+        )
       ) : (
         <>
           <div className="grid">

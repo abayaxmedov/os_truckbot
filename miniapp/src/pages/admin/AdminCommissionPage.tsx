@@ -10,12 +10,15 @@ export function AdminCommissionPage() {
   const { t } = useTranslation();
   const toast = useToast();
   const [value, setValue] = useState("");
+  const [support, setSupport] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [savingSupport, setSavingSupport] = useState(false);
 
   useEffect(() => {
     api.getAdminSettings().then((s) => {
       setValue(s.default_commission_percent ?? "");
+      setSupport(s.support_telegram ?? "");
       setLoading(false);
     });
   }, []);
@@ -27,6 +30,16 @@ export function AdminCommissionPage() {
       toast.show(t("profile.saved"));
     } finally {
       setSaving(false);
+    }
+  };
+
+  const saveSupport = async () => {
+    setSavingSupport(true);
+    try {
+      await api.setSupportTelegram(support.trim().replace(/^@/, ""));
+      toast.show(t("profile.saved"));
+    } finally {
+      setSavingSupport(false);
     }
   };
 
@@ -52,6 +65,29 @@ export function AdminCommissionPage() {
         </div>
         <button className="btn btn-block" disabled={saving} onClick={save}>
           {saving ? <span className="spin" /> : null} {t("common.save")}
+        </button>
+      </div>
+
+      <div className="section-title">{t("admin.supportTelegram")}</div>
+      <div className="card card-pad">
+        <div className="field">
+          <label>{t("admin.supportTelegramLabel")}</label>
+          <div className="row" style={{ gap: 0, alignItems: "stretch" }}>
+            <span className="input" style={{ flex: "none", width: 34, display: "flex", alignItems: "center", justifyContent: "center", borderRight: 0, borderTopRightRadius: 0, borderBottomRightRadius: 0, color: "var(--muted)" }}>@</span>
+            <input
+              className="input"
+              style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+              value={support}
+              placeholder="truckcenter_admin"
+              autoCapitalize="off"
+              autoCorrect="off"
+              onChange={(e) => setSupport(e.target.value.replace(/^@/, ""))}
+            />
+          </div>
+          <div className="caption mt-sm">{t("admin.supportTelegramHint")}</div>
+        </div>
+        <button className="btn btn-block" disabled={savingSupport} onClick={saveSupport}>
+          {savingSupport ? <span className="spin" /> : null} {t("common.save")}
         </button>
       </div>
     </div>

@@ -51,7 +51,10 @@
     "sortPriceDesc": "Qimmat",
     "sortPopular": "Ommabop",
     "apply": "Qo‘llash",
-    "reset": "Tozalash"
+    "reset": "Tozalash",
+    "notFoundTitle": "Ehtiyot qismni topmadingizmi?",
+    "notFoundText": "Adminga yozing — kerakli qismni topib beramiz",
+    "writeAdmin": "Adminga yozish"
   },
   "product": {
     "article": "Artikul",
@@ -218,6 +221,9 @@
     "approve": "Tasdiqlash",
     "reject": "Rad etish",
     "defaultCommission": "Standart komissiya (%)",
+    "supportTelegram": "Qo‘llab-quvvatlash Telegram",
+    "supportTelegramLabel": "Admin username",
+    "supportTelegramHint": "Katalogda qidiruvda hech narsa topilmaganda ko‘rinadi. Yashirish uchun bo‘sh qoldiring.",
     "addCategory": "Kategoriya qo‘shish",
     "addBanner": "Banner qo‘shish",
     "addAnalogGroup": "Analoglar guruhini qo‘shish",

@@ -6,7 +6,12 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings as app_settings
-from app.models.setting import KEY_DEFAULT_COMMISSION, KEY_DEFAULT_DELIVERY_COST, Setting
+from app.models.setting import (
+    KEY_DEFAULT_COMMISSION,
+    KEY_DEFAULT_DELIVERY_COST,
+    KEY_SUPPORT_TELEGRAM,
+    Setting,
+)
 
 
 async def get_setting(session: AsyncSession, key: str, default: str = "") -> str:
@@ -43,6 +48,12 @@ async def get_default_delivery_cost(session: AsyncSession) -> Decimal:
         except (ValueError, ArithmeticError):
             pass
     return Decimal(str(app_settings.default_delivery_cost))
+
+
+async def get_support_telegram(session: AsyncSession) -> str:
+    """Admin @username for the 'nothing found' contact link (DB → env fallback)."""
+    raw = await get_setting(session, KEY_SUPPORT_TELEGRAM)
+    return (raw or app_settings.support_telegram or "").strip()
 
 
 async def all_settings(session: AsyncSession) -> dict[str, str]:
