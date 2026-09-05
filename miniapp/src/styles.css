@@ -544,6 +544,15 @@ img {
   border-color: var(--brand);
   box-shadow: var(--shadow-brand);
 }
+/* Read-only chip used to display selected tags (no pointer / press feedback). */
+.chip-static {
+  cursor: default;
+  background: var(--surface-2);
+  font-weight: 600;
+}
+.chip-static:active {
+  transform: none;
+}
 .segmented {
   display: inline-flex;
   background: var(--surface-2);
@@ -1158,6 +1167,13 @@ img {
   50% {
     transform: scale(1.25);
   }
+}
+
+/* Wrapping multi-select chips (master trucks / specializations). */
+.chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 /* "Sold N times" indicator (social proof). */

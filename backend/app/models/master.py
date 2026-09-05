@@ -4,7 +4,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime, Enum, ForeignKey, Numeric, String
+from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Integer, Numeric, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base, TimestampMixin
@@ -31,6 +31,19 @@ class MasterProfile(Base, TimestampMixin):
     status: Mapped[MasterStatus] = mapped_column(
         Enum(MasterStatus, native_enum=False, length=16), default=MasterStatus.active
     )
+
+    # --- Service profile (B1) ---
+    trucks: Mapped[str] = mapped_column(String(255), default="")  # CSV of truck brand slugs
+    specializations: Mapped[str] = mapped_column(String(512), default="")  # CSV of spec codes
+    regions: Mapped[str] = mapped_column(String(255), default="")  # areas served (free text)
+    work_hours: Mapped[str] = mapped_column(String(64), default="")  # e.g. "9:00–20:00"
+    is_24_7: Mapped[bool] = mapped_column(Boolean, default=False)
+    experience_years: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    bio: Mapped[str] = mapped_column(Text, default="")
+    price_call: Mapped[Decimal | None] = mapped_column(Numeric(14, 2), nullable=True)  # call-out
+    price_diagnostics: Mapped[Decimal | None] = mapped_column(Numeric(14, 2), nullable=True)
+    price_repair_note: Mapped[str] = mapped_column(String(64), default="")  # e.g. "kelishiladi"
+    is_verified: Mapped[bool] = mapped_column(Boolean, default=False)  # admin-granted badge
 
     balance: Mapped[Decimal] = mapped_column(Numeric(14, 2), default=Decimal("0"))  # withdrawable
     pending: Mapped[Decimal] = mapped_column(

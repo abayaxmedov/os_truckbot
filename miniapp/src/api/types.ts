@@ -28,6 +28,9 @@ export interface User {
 export interface Master {
   id: number;
   status: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
   photo: string;
   address: string;
   card_number: string;
@@ -35,6 +38,18 @@ export interface Master {
   pending: number;
   total_earned: number;
   next_payout_at: string | null;
+  // Service profile (B1)
+  trucks: string[];
+  specializations: string[];
+  regions: string;
+  work_hours: string;
+  is_24_7: boolean;
+  experience_years: number | null;
+  bio: string;
+  price_call: number | null;
+  price_diagnostics: number | null;
+  price_repair_note: string;
+  is_verified: boolean;
 }
 
 export interface BonusTxn {

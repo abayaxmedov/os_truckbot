@@ -41,6 +41,16 @@ export interface MasterRegisterData {
   photo?: string;
   address?: string;
   card_number?: string;
+  trucks?: string[];
+  specializations?: string[];
+  regions?: string;
+  work_hours?: string;
+  is_24_7?: boolean;
+  experience_years?: number | null;
+  bio?: string;
+  price_call?: number | null;
+  price_diagnostics?: number | null;
+  price_repair_note?: string;
 }
 export const masterRegister = (data: MasterRegisterData) => request<Master>("/master/register", { body: data });
 export const getMaster = () => request<Master>("/master");

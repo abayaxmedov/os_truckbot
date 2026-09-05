@@ -10,11 +10,25 @@ class MasterRegister(BaseModel):
     photo: str = ""  # media path from /uploads/image
     address: str = ""
     card_number: str = ""
+    # Service profile (B1)
+    trucks: list[str] = []
+    specializations: list[str] = []
+    regions: str = ""
+    work_hours: str = ""
+    is_24_7: bool = False
+    experience_years: int | None = None
+    bio: str = ""
+    price_call: float | None = None
+    price_diagnostics: float | None = None
+    price_repair_note: str = ""
 
 
 class MasterOut(BaseModel):
     id: int
     status: str
+    first_name: str = ""
+    last_name: str = ""
+    phone: str = ""
     photo: str = ""
     address: str = ""
     card_number: str = ""
@@ -22,6 +36,18 @@ class MasterOut(BaseModel):
     pending: float = 0.0
     total_earned: float = 0.0
     next_payout_at: str | None = None
+    # Service profile (B1)
+    trucks: list[str] = []
+    specializations: list[str] = []
+    regions: str = ""
+    work_hours: str = ""
+    is_24_7: bool = False
+    experience_years: int | None = None
+    bio: str = ""
+    price_call: float | None = None
+    price_diagnostics: float | None = None
+    price_repair_note: str = ""
+    is_verified: bool = False
 
 
 class BonusTxnOut(BaseModel):

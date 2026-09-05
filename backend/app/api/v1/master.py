@@ -5,6 +5,7 @@ from sqlalchemy import select
 
 from app.core.deps import CurrentUser, SessionDep
 from app.models.master import BonusTransaction, MasterProfile, Payout
+from app.models.user import User
 from app.schemas.master import BonusTxnOut, MasterOut, MasterRegister, PayoutOut
 from app.services.master_service import MasterInput, register_or_update_master
 from app.services.media import media_url
@@ -12,10 +13,17 @@ from app.services.media import media_url
 router = APIRouter(prefix="/master", tags=["master"])
 
 
-def serialize_master(mp: MasterProfile) -> MasterOut:
+def _split(csv: str) -> list[str]:
+    return [c for c in (csv or "").split(",") if c]
+
+
+def serialize_master(mp: MasterProfile, user: "User | None" = None) -> MasterOut:
     return MasterOut(
         id=mp.id,
         status=mp.status.value,
+        first_name=user.first_name if user else "",
+        last_name=(user.last_name or "") if user else "",
+        phone=(user.phone or "") if user else "",
         photo=media_url(mp.photo),
         address=mp.address,
         card_number=mp.card_number,
@@ -23,6 +31,17 @@ def serialize_master(mp: MasterProfile) -> MasterOut:
         pending=float(mp.pending or 0),
         total_earned=float(mp.total_earned or 0),
         next_payout_at=mp.next_payout_at.isoformat() if mp.next_payout_at else None,
+        trucks=_split(mp.trucks),
+        specializations=_split(mp.specializations),
+        regions=mp.regions,
+        work_hours=mp.work_hours,
+        is_24_7=mp.is_24_7,
+        experience_years=mp.experience_years,
+        bio=mp.bio,
+        price_call=float(mp.price_call) if mp.price_call is not None else None,
+        price_diagnostics=float(mp.price_diagnostics) if mp.price_diagnostics is not None else None,
+        price_repair_note=mp.price_repair_note,
+        is_verified=mp.is_verified,
     )
 
 
@@ -41,18 +60,28 @@ async def register(payload: MasterRegister, session: SessionDep, user: CurrentUs
             photo=payload.photo,
             address=payload.address,
             card_number=payload.card_number,
+            trucks=payload.trucks,
+            specializations=payload.specializations,
+            regions=payload.regions,
+            work_hours=payload.work_hours,
+            is_24_7=payload.is_24_7,
+            experience_years=payload.experience_years,
+            bio=payload.bio,
+            price_call=payload.price_call,
+            price_diagnostics=payload.price_diagnostics,
+            price_repair_note=payload.price_repair_note,
         ),
     )
     await session.commit()
     await session.refresh(mp)
-    return serialize_master(mp)
+    return serialize_master(mp, user)
 
 
 @router.get("", response_model=MasterOut)
 async def my_master(user: CurrentUser) -> MasterOut:
     if user.master_profile is None:
         raise HTTPException(status_code=404, detail="not_a_master")
-    return serialize_master(user.master_profile)
+    return serialize_master(user.master_profile, user)
 
 
 @router.get("/transactions", response_model=list[BonusTxnOut])
