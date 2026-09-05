@@ -8,14 +8,18 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { Icon } from "@/components/Icon";
 import { Logo } from "@/components/Logo";
 import { ProductCard } from "@/components/ProductCard";
+import { Sheet } from "@/components/Sheet";
 import { SkeletonGrid } from "@/components/Skeleton";
 import { useApi } from "@/lib/useApi";
 import { categoryIcon } from "@/lib/format";
+import { SPECIALIZATIONS } from "@/lib/masterOptions";
+import { haptic } from "@/telegram/telegram";
 
 export function HomePage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const nav = useNavigate();
   const [q, setQ] = useState("");
+  const [findMaster, setFindMaster] = useState(false);
 
   const banners = useApi(() => api.getBanners(), []);
   const categories = useApi(() => api.getCategories(), []);
@@ -58,6 +62,16 @@ export function HomePage() {
           <Logo variant="white" mark height={68} />
         </div>
       )}
+
+      {/* Find a master (usta) — service directory + problem matcher */}
+      <button className="find-master mb" onClick={() => { haptic("light"); setFindMaster(true); }}>
+        <span className="fm-icon">🔧</span>
+        <span style={{ flex: 1, textAlign: "left" }}>
+          <span className="fm-title">{t("masters.findTitle")}</span>
+          <span className="fm-sub">{t("masters.findSub")}</span>
+        </span>
+        <Icon name="chevron" size={20} />
+      </button>
 
       {brands.data && brands.data.length > 0 && (
         <>
@@ -109,6 +123,24 @@ export function HomePage() {
           ))}
         </div>
       )}
+
+      <Sheet open={findMaster} onClose={() => setFindMaster(false)} title={t("masters.problemTitle")}>
+        <div className="caption mb">{t("masters.problemSub")}</div>
+        <div className="chip-wrap">
+          {SPECIALIZATIONS.map((o) => (
+            <button
+              key={o.code}
+              className="chip"
+              onClick={() => { haptic("light"); setFindMaster(false); nav(`/masters?specialization=${o.code}`); }}
+            >
+              {i18n.language === "uz" ? o.uz : o.ru}
+            </button>
+          ))}
+        </div>
+        <button className="btn btn-block mt" onClick={() => { setFindMaster(false); nav("/masters"); }}>
+          {t("masters.allMasters")}
+        </button>
+      </Sheet>
     </div>
   );
 }

@@ -67,6 +67,27 @@ class PayoutOut(BaseModel):
     created_at: str
 
 
+class MasterPublicOut(BaseModel):
+    """Master profile as seen by clients in the 'find a master' directory."""
+
+    id: int
+    name: str = ""
+    photo: str = ""
+    phone: str = ""
+    is_verified: bool = False
+    trucks: list[str] = []
+    specializations: list[str] = []
+    regions: str = ""
+    work_hours: str = ""
+    is_24_7: bool = False
+    experience_years: int | None = None
+    bio: str = ""
+    price_call: float | None = None
+    price_diagnostics: float | None = None
+    price_repair_note: str = ""
+    member_year: int | None = None
+
+
 class OnboardRequest(BaseModel):
     role: str  # "buyer" | "master"
 

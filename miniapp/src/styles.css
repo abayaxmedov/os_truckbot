@@ -1169,6 +1169,74 @@ img {
   }
 }
 
+/* "Find a master" CTA on the home screen. */
+.find-master {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: linear-gradient(120deg, var(--brand-700), var(--brand-500));
+  color: #fff;
+  cursor: pointer;
+  box-shadow: var(--shadow-brand);
+}
+.find-master:active {
+  transform: scale(0.99);
+}
+.find-master .fm-icon {
+  font-size: 26px;
+  flex: none;
+}
+.find-master .fm-title {
+  display: block;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+.find-master .fm-sub {
+  display: block;
+  font-size: 12.5px;
+  opacity: 0.85;
+  margin-top: 1px;
+}
+
+/* ---- Master (usta) directory ---- */
+.master-card {
+  cursor: pointer;
+  transition: transform var(--dur), box-shadow var(--dur);
+}
+.master-card:active {
+  transform: scale(0.99);
+}
+.master-ava {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+.master-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.mtag {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: var(--r-full);
+  background: var(--surface-2);
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.mtag-truck {
+  background: var(--brand-tint);
+  color: var(--brand);
+}
+
 /* Wrapping multi-select chips (master trucks / specializations). */
 .chip-wrap {
   display: flex;

@@ -126,7 +126,19 @@
     "bioHint": "Tajribangiz va xizmatlaringiz haqida qisqacha",
     "verified": "Tasdiqlangan",
     "editProfile": "Profilni tahrirlash",
-    "fillProfile": "Usta profilini to‘ldirish"
+    "fillProfile": "Usta profilini to‘ldirish",
+    "years": "yil tajriba"
+  },
+  "masters": {
+    "title": "Ustalar",
+    "subtitle": "Muammoyingiz bo‘yicha usta toping",
+    "empty": "Usta topilmadi",
+    "findTitle": "Usta topish",
+    "findSub": "Furangiz buzildimi? Yaqin usta topamiz",
+    "problemTitle": "Nima bo‘ldi?",
+    "problemSub": "Muammoni tanlang — mos ustalarni ko‘rsatamiz",
+    "allMasters": "Barcha ustalar",
+    "call": "Qo‘ng‘iroq qilish"
   },
   "cart": {
     "title": "Savat",

@@ -10,6 +10,7 @@ import type {
   Cart,
   Category,
   Master,
+  MasterPublic,
   Order,
   OrderListItem,
   Page,
@@ -54,6 +55,11 @@ export interface MasterRegisterData {
 }
 export const masterRegister = (data: MasterRegisterData) => request<Master>("/master/register", { body: data });
 export const getMaster = () => request<Master>("/master");
+
+// Public "find a master" directory
+export const getMasters = (params: { specialization?: string; truck?: string; q?: string } = {}) =>
+  request<MasterPublic[]>("/masters", { query: params });
+export const getMasterPublic = (id: number) => request<MasterPublic>(`/masters/${id}`);
 export const getMasterTransactions = () => request<BonusTxn[]>("/master/transactions");
 export const getMasterPayouts = () => request<Payout[]>("/master/payouts");
 

@@ -18,6 +18,8 @@ import { FavoritesPage } from "@/pages/buyer/FavoritesPage";
 
 import { OnboardingScreen } from "@/pages/OnboardingScreen";
 import { MasterCabinet } from "@/pages/master/MasterCabinet";
+import { MasterDetailPage } from "@/pages/buyer/MasterDetailPage";
+import { MastersPage } from "@/pages/buyer/MastersPage";
 
 import { SellerDashboard } from "@/pages/seller/SellerDashboard";
 import { SellerProductsPage } from "@/pages/seller/SellerProductsPage";
@@ -87,6 +89,8 @@ export function App() {
         <Route path="/orders/:id" element={<OrderDetailPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/master" element={<MasterCabinet />} />
+        <Route path="/masters" element={<MastersPage />} />
+        <Route path="/masters/:id" element={<MasterDetailPage />} />
 
         <Route path="/seller" element={<SellerDashboard />} />
         <Route path="/seller/products" element={<SellerProductsPage />} />

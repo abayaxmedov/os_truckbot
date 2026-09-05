@@ -52,6 +52,25 @@ export interface Master {
   is_verified: boolean;
 }
 
+export interface MasterPublic {
+  id: number;
+  name: string;
+  photo: string;
+  phone: string;
+  is_verified: boolean;
+  trucks: string[];
+  specializations: string[];
+  regions: string;
+  work_hours: string;
+  is_24_7: boolean;
+  experience_years: number | null;
+  bio: string;
+  price_call: number | null;
+  price_diagnostics: number | null;
+  price_repair_note: string;
+  member_year: number | null;
+}
+
 export interface BonusTxn {
   id: number;
   amount: number;

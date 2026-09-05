@@ -10,6 +10,7 @@ from app.api.v1 import (
     favorites,
     interactions,
     master,
+    masters,
     me,
     orders,
     payments,
@@ -30,6 +31,7 @@ api_router.include_router(orders.router)
 api_router.include_router(favorites.router)
 api_router.include_router(interactions.router)
 api_router.include_router(master.router)
+api_router.include_router(masters.router)
 api_router.include_router(seller.router)
 api_router.include_router(admin.router)
 api_router.include_router(payments.router)
