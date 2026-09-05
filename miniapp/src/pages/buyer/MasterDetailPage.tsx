@@ -1,20 +1,36 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import * as api from "@/api";
 import { mediaUrl } from "@/api/client";
 import { Icon } from "@/components/Icon";
-import { Loader } from "@/components/ui";
+import { Loader, useToast } from "@/components/ui";
 import { useApi } from "@/lib/useApi";
 import { formatMoney } from "@/lib/format";
 import { labelsFor, SPECIALIZATIONS, TRUCKS } from "@/lib/masterOptions";
-import { haptic } from "@/telegram/telegram";
+import { getLocation, haptic } from "@/telegram/telegram";
 
 export function MasterDetailPage() {
   const { id } = useParams();
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
+  const toast = useToast();
   const { data: m, loading } = useApi(() => api.getMasterPublic(Number(id)), [id]);
+  const [dist, setDist] = useState<{ distance_km: number; eta_min: number } | null>(null);
+  const [distBusy, setDistBusy] = useState(false);
+
+  const showDistance = async () => {
+    setDistBusy(true);
+    try {
+      const c = await getLocation();
+      if (!c) return toast.show(t("checkout.locationFail"));
+      const res = await api.getMasterDistances(c.latitude, c.longitude, [Number(id)]);
+      if (res[0]) setDist(res[0]);
+    } finally {
+      setDistBusy(false);
+    }
+  };
 
   if (loading || !m) return <Loader />;
   const trucks = labelsFor(TRUCKS, m.trucks, lang);
@@ -52,6 +68,24 @@ export function MasterDetailPage() {
           <div className="muted small mt-sm">{m.is_24_7 ? `🚨 ${t("master.is247")}` : m.work_hours}</div>
         )}
       </div>
+
+      {m.has_location && (
+        <div className="card card-pad mb">
+          {dist ? (
+            <div className="row" style={{ gap: 12, alignItems: "center" }}>
+              <span className="icon-chip" style={{ width: 40, height: 40, background: "var(--brand-tint)", color: "var(--brand)" }}><Icon name="pin" size={20} /></span>
+              <div style={{ flex: 1 }}>
+                <div className="bold">📍 {dist.distance_km} {t("masters.km")} · ~{dist.eta_min} {t("masters.min")}</div>
+                <div className="caption">{t("masters.etaHint")}</div>
+              </div>
+            </div>
+          ) : (
+            <button className="btn btn-secondary btn-block" onClick={showDistance} disabled={distBusy}>
+              {distBusy ? <span className="spin" /> : <Icon name="pin" size={17} />} {t("masters.showDistance")}
+            </button>
+          )}
+        </div>
+      )}
 
       {trucks.length > 0 && (
         <>

@@ -39,6 +39,8 @@ class MasterInput:
     price_call: float | None = None
     price_diagnostics: float | None = None
     price_repair_note: str = ""
+    latitude: float | None = None
+    longitude: float | None = None
 
 
 def _apply_profile(master: MasterProfile, data: MasterInput) -> None:
@@ -55,6 +57,9 @@ def _apply_profile(master: MasterProfile, data: MasterInput) -> None:
         Decimal(str(data.price_diagnostics)) if data.price_diagnostics is not None else None
     )
     master.price_repair_note = data.price_repair_note
+    if data.latitude is not None and data.longitude is not None:
+        master.latitude = Decimal(str(data.latitude))
+        master.longitude = Decimal(str(data.longitude))
 
 
 async def register_or_update_master(

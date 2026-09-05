@@ -8,6 +8,7 @@ import { Icon } from "@/components/Icon";
 import { useToast } from "@/components/ui";
 import { SPECIALIZATIONS, TRUCKS } from "@/lib/masterOptions";
 import { useAuth } from "@/store/auth";
+import { getLocation } from "@/telegram/telegram";
 
 export function MasterRegisterForm({ onDone }: { onDone?: () => void }) {
   const { t, i18n } = useTranslation();
@@ -35,6 +36,8 @@ export function MasterRegisterForm({ onDone }: { onDone?: () => void }) {
   const [trucks, setTrucks] = useState<string[]>([]);
   const [specs, setSpecs] = useState<string[]>([]);
   const [is247, setIs247] = useState(false);
+  const [loc, setLoc] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [locBusy, setLocBusy] = useState(false);
   const [busy, setBusy] = useState(false);
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -57,6 +60,7 @@ export function MasterRegisterForm({ onDone }: { onDone?: () => void }) {
       setTrucks(m.trucks || []);
       setSpecs(m.specializations || []);
       setIs247(!!m.is_24_7);
+      if (m.latitude != null && m.longitude != null) setLoc({ latitude: m.latitude, longitude: m.longitude });
       if (m.photo) setPhoto(m.photo.replace(/^.*\/media\//, "").replace(/^\//, ""));
     }).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,6 +76,17 @@ export function MasterRegisterForm({ onDone }: { onDone?: () => void }) {
   const num = (v: string): number | null => {
     const n = Number(v);
     return v.trim() !== "" && !Number.isNaN(n) ? n : null;
+  };
+
+  const shareLocation = async () => {
+    setLocBusy(true);
+    try {
+      const c = await getLocation();
+      if (c) setLoc(c);
+      else toast.show(t("checkout.locationFail"));
+    } finally {
+      setLocBusy(false);
+    }
   };
 
   const submit = async () => {
@@ -98,6 +113,8 @@ export function MasterRegisterForm({ onDone }: { onDone?: () => void }) {
         price_call: num(form.price_call),
         price_diagnostics: num(form.price_diagnostics),
         price_repair_note: form.price_repair_note,
+        latitude: loc?.latitude ?? null,
+        longitude: loc?.longitude ?? null,
       });
       const me = await api.getMe();
       setUser(me);
@@ -143,6 +160,22 @@ export function MasterRegisterForm({ onDone }: { onDone?: () => void }) {
         <button type="button" className={`chip mt ${is247 ? "active" : ""}`} onClick={() => setIs247((v) => !v)}>
           {is247 ? "✓ " : ""}🚨 {t("master.is247")}
         </button>
+        <div className="field mt" style={{ marginBottom: 0 }}>
+          <label>{t("master.baseLocation")}</label>
+          {loc ? (
+            <div className="row" style={{ gap: 8, alignItems: "center" }}>
+              <span className="badge badge-green" style={{ gap: 4 }}><Icon name="check" size={12} strokeWidth={3} /> {t("checkout.locationOk")}</span>
+              <button type="button" className="btn btn-sm btn-secondary" onClick={shareLocation} disabled={locBusy}>
+                {locBusy ? <span className="spin" /> : <Icon name="pin" size={14} />} {t("master.updateLocation")}
+              </button>
+            </div>
+          ) : (
+            <button type="button" className="btn btn-secondary btn-block" onClick={shareLocation} disabled={locBusy}>
+              {locBusy ? <span className="spin" /> : <Icon name="pin" size={16} />} {t("master.shareLocation")}
+            </button>
+          )}
+          <div className="caption mt-sm">{t("master.baseLocationHint")}</div>
+        </div>
       </div>
 
       {/* Trucks */}

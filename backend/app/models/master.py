@@ -44,6 +44,8 @@ class MasterProfile(Base, TimestampMixin):
     price_diagnostics: Mapped[Decimal | None] = mapped_column(Numeric(14, 2), nullable=True)
     price_repair_note: Mapped[str] = mapped_column(String(64), default="")  # e.g. "kelishiladi"
     is_verified: Mapped[bool] = mapped_column(Boolean, default=False)  # admin-granted badge
+    latitude: Mapped[float | None] = mapped_column(Numeric(10, 7), nullable=True)  # base location
+    longitude: Mapped[float | None] = mapped_column(Numeric(10, 7), nullable=True)
 
     balance: Mapped[Decimal] = mapped_column(Numeric(14, 2), default=Decimal("0"))  # withdrawable
     pending: Mapped[Decimal] = mapped_column(

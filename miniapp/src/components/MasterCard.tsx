@@ -7,7 +7,7 @@ import { Icon } from "@/components/Icon";
 import { formatMoney } from "@/lib/format";
 import { labelsFor, SPECIALIZATIONS, TRUCKS } from "@/lib/masterOptions";
 
-export function MasterCard({ m }: { m: MasterPublic }) {
+export function MasterCard({ m, dist }: { m: MasterPublic; dist?: { distance_km: number; eta_min: number } }) {
   const nav = useNavigate();
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
@@ -35,6 +35,11 @@ export function MasterCard({ m }: { m: MasterPublic }) {
             {m.is_24_7 ? "🚨 24/7" : m.work_hours}
           </div>
           {m.regions && <div className="caption row" style={{ gap: 4, marginTop: 2 }}><Icon name="pin" size={12} /> {m.regions}</div>}
+          {dist && (
+            <div className="row" style={{ gap: 4, marginTop: 3, color: "var(--brand)", fontWeight: 700, fontSize: 12.5 }}>
+              <Icon name="pin" size={12} /> {dist.distance_km} {t("masters.km")} · ~{dist.eta_min} {t("masters.min")}
+            </div>
+          )}
         </div>
         <Icon name="chevron" size={18} className="chevron" style={{ flex: "none" }} />
       </div>

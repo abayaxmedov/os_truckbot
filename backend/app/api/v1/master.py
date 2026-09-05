@@ -42,6 +42,8 @@ def serialize_master(mp: MasterProfile, user: "User | None" = None) -> MasterOut
         price_diagnostics=float(mp.price_diagnostics) if mp.price_diagnostics is not None else None,
         price_repair_note=mp.price_repair_note,
         is_verified=mp.is_verified,
+        latitude=float(mp.latitude) if mp.latitude is not None else None,
+        longitude=float(mp.longitude) if mp.longitude is not None else None,
     )
 
 
@@ -70,6 +72,8 @@ async def register(payload: MasterRegister, session: SessionDep, user: CurrentUs
             price_call=payload.price_call,
             price_diagnostics=payload.price_diagnostics,
             price_repair_note=payload.price_repair_note,
+            latitude=payload.latitude,
+            longitude=payload.longitude,
         ),
     )
     await session.commit()

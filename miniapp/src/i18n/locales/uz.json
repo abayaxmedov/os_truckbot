@@ -127,7 +127,11 @@
     "verified": "Tasdiqlangan",
     "editProfile": "Profilni tahrirlash",
     "fillProfile": "Usta profilini to‘ldirish",
-    "years": "yil tajriba"
+    "years": "yil tajriba",
+    "baseLocation": "Lokatsiya (baza)",
+    "baseLocationHint": "Mijozlar sizgacha masofani ko‘radi. Aniq manzil ko‘rsatilmaydi.",
+    "shareLocation": "📍 Lokatsiyamni belgilash",
+    "updateLocation": "Yangilash"
   },
   "masters": {
     "title": "Ustalar",
@@ -138,7 +142,12 @@
     "problemTitle": "Nima bo‘ldi?",
     "problemSub": "Muammoni tanlang — mos ustalarni ko‘rsatamiz",
     "allMasters": "Barcha ustalar",
-    "call": "Qo‘ng‘iroq qilish"
+    "call": "Qo‘ng‘iroq qilish",
+    "nearMe": "Yaqin",
+    "showDistance": "Masofani ko‘rsatish",
+    "km": "km",
+    "min": "daqiqa",
+    "etaHint": "Usta bazasidan taxminiy yetib borish vaqti"
   },
   "cart": {
     "title": "Savat",

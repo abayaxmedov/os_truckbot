@@ -11,6 +11,7 @@ import type {
   Cart,
   Category,
   Master,
+  MasterDistance,
   MasterPublic,
   Order,
   OrderListItem,
@@ -53,6 +54,8 @@ export interface MasterRegisterData {
   price_call?: number | null;
   price_diagnostics?: number | null;
   price_repair_note?: string;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 export const masterRegister = (data: MasterRegisterData) => request<Master>("/master/register", { body: data });
 export const getMaster = () => request<Master>("/master");
@@ -61,6 +64,9 @@ export const getMaster = () => request<Master>("/master");
 export const getMasters = (params: { specialization?: string; truck?: string; q?: string } = {}) =>
   request<MasterPublic[]>("/masters", { query: params });
 export const getMasterPublic = (id: number) => request<MasterPublic>(`/masters/${id}`);
+// Client location goes in the POST body (never the URL) → distances + ETA.
+export const getMasterDistances = (latitude: number, longitude: number, ids?: number[]) =>
+  request<MasterDistance[]>("/masters/distances", { body: { latitude, longitude, ids } });
 export const getMasterTransactions = () => request<BonusTxn[]>("/master/transactions");
 export const getMasterPayouts = () => request<Payout[]>("/master/payouts");
 

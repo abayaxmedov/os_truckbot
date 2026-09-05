@@ -21,6 +21,8 @@ class MasterRegister(BaseModel):
     price_call: float | None = None
     price_diagnostics: float | None = None
     price_repair_note: str = ""
+    latitude: float | None = None
+    longitude: float | None = None
 
 
 class MasterOut(BaseModel):
@@ -48,6 +50,8 @@ class MasterOut(BaseModel):
     price_diagnostics: float | None = None
     price_repair_note: str = ""
     is_verified: bool = False
+    latitude: float | None = None
+    longitude: float | None = None
 
 
 class BonusTxnOut(BaseModel):
@@ -86,6 +90,21 @@ class MasterPublicOut(BaseModel):
     price_diagnostics: float | None = None
     price_repair_note: str = ""
     member_year: int | None = None
+    has_location: bool = False  # whether distance-to-me can be computed
+
+
+class DistanceRequest(BaseModel):
+    """Client shares its location (in the body, never the URL) to get distances."""
+
+    latitude: float
+    longitude: float
+    ids: list[int] | None = None  # limit to these masters (optional)
+
+
+class DistanceOut(BaseModel):
+    id: int
+    distance_km: float
+    eta_min: int
 
 
 class OnboardRequest(BaseModel):

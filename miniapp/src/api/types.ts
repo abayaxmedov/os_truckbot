@@ -50,6 +50,14 @@ export interface Master {
   price_diagnostics: number | null;
   price_repair_note: string;
   is_verified: boolean;
+  latitude: number | null;
+  longitude: number | null;
+}
+
+export interface MasterDistance {
+  id: number;
+  distance_km: number;
+  eta_min: number;
 }
 
 export interface AdminMaster {
@@ -84,6 +92,7 @@ export interface MasterPublic {
   price_diagnostics: number | null;
   price_repair_note: string;
   member_year: number | null;
+  has_location: boolean;
 }
 
 export interface BonusTxn {
