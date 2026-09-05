@@ -52,6 +52,21 @@ export interface Master {
   is_verified: boolean;
 }
 
+export interface AdminMaster {
+  id: number;
+  user_id: number;
+  telegram_id: number;
+  name: string;
+  phone: string;
+  photo: string;
+  status: string;
+  is_verified: boolean;
+  trucks: string[];
+  specializations: string[];
+  regions: string;
+  experience_years: number | null;
+}
+
 export interface MasterPublic {
   id: number;
   name: string;

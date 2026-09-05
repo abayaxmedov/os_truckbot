@@ -7,6 +7,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
 from app.api.serializers import serialize_banner, serialize_product, serialize_product_list_item
+from app.services.media import media_url
 from app.core.deps import CurrentAdmin, SessionDep
 from app.core.utils import normalize_part_number, slugify
 from app.models.analog import AnalogGroup, AnalogReference
@@ -18,6 +19,7 @@ from app.models.product import Product, ProductVehicle
 from app.models.setting import KEY_DEFAULT_COMMISSION, KEY_SUPPORT_TELEGRAM
 from app.models.user import SellerProfile, User
 from app.schemas.admin import (
+    AdminMasterOut,
     AdminSellerOut,
     AdminStatsOut,
     AnalogGroupIn,
@@ -30,6 +32,7 @@ from app.schemas.admin import (
     CategoryUpdate,
     CommissionUpdate,
     SupportTelegramUpdate,
+    MasterVerifyUpdate,
     ProductModerate,
     SellerCommissionUpdate,
     SellerStatusUpdate,
@@ -534,3 +537,50 @@ async def run_payouts(session: SessionDep, admin: CurrentAdmin) -> Msg:
     count = await run_scheduled_payouts(session)
     await session.commit()
     return Msg(detail=f"created:{count}")
+
+
+# ---- Masters (verification) ----
+def _split_csv(csv: str) -> list[str]:
+    return [c for c in (csv or "").split(",") if c]
+
+
+@router.get("/masters", response_model=list[AdminMasterOut])
+async def list_masters(session: SessionDep, admin: CurrentAdmin) -> list[AdminMasterOut]:
+    result = await session.execute(
+        select(MasterProfile)
+        .options(selectinload(MasterProfile.user))
+        .order_by(MasterProfile.is_verified.asc(), MasterProfile.id.desc())
+    )
+    out: list[AdminMasterOut] = []
+    for mp in result.scalars().unique().all():
+        u = mp.user
+        name = " ".join(filter(None, [u.first_name if u else "", (u.last_name or "") if u else ""])).strip()
+        out.append(
+            AdminMasterOut(
+                id=mp.id,
+                user_id=mp.user_id,
+                telegram_id=u.telegram_id if u else 0,
+                name=name,
+                phone=(u.phone or "") if u else "",
+                photo=media_url(mp.photo),
+                status=mp.status.value,
+                is_verified=mp.is_verified,
+                trucks=_split_csv(mp.trucks),
+                specializations=_split_csv(mp.specializations),
+                regions=mp.regions,
+                experience_years=mp.experience_years,
+            )
+        )
+    return out
+
+
+@router.patch("/masters/{master_id}/verify", response_model=Msg)
+async def set_master_verified(
+    master_id: int, payload: MasterVerifyUpdate, session: SessionDep, admin: CurrentAdmin
+) -> Msg:
+    mp = await session.get(MasterProfile, master_id)
+    if mp is None:
+        raise HTTPException(status_code=404, detail="master_not_found")
+    mp.is_verified = payload.is_verified
+    await session.commit()
+    return Msg(detail="updated")

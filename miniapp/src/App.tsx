@@ -29,6 +29,7 @@ import { SellerImportPage } from "@/pages/seller/SellerImportPage";
 
 import { AdminDashboard } from "@/pages/admin/AdminDashboard";
 import { AdminSellersPage } from "@/pages/admin/AdminSellersPage";
+import { AdminMastersPage } from "@/pages/admin/AdminMastersPage";
 import { AdminModerationPage } from "@/pages/admin/AdminModerationPage";
 import { AdminCategoriesPage } from "@/pages/admin/AdminCategoriesPage";
 import { AdminCommissionPage } from "@/pages/admin/AdminCommissionPage";
@@ -101,6 +102,7 @@ export function App() {
 
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/sellers" element={<AdminSellersPage />} />
+        <Route path="/admin/masters" element={<AdminMastersPage />} />
         <Route path="/admin/moderation" element={<AdminModerationPage />} />
         <Route path="/admin/categories" element={<AdminCategoriesPage />} />
         <Route path="/admin/commission" element={<AdminCommissionPage />} />

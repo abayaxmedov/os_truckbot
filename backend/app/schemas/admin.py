@@ -104,5 +104,24 @@ class AdminSellerOut(BaseModel):
     commission_override: float | None = None
 
 
+class AdminMasterOut(BaseModel):
+    id: int
+    user_id: int
+    telegram_id: int
+    name: str = ""
+    phone: str = ""
+    photo: str = ""
+    status: str
+    is_verified: bool = False
+    trucks: list[str] = []
+    specializations: list[str] = []
+    regions: str = ""
+    experience_years: int | None = None
+
+
+class MasterVerifyUpdate(BaseModel):
+    is_verified: bool
+
+
 class ProductModerate(BaseModel):
     status: str  # approved | rejected

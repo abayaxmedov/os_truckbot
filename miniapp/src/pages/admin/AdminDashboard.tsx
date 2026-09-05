@@ -15,6 +15,7 @@ export function AdminDashboard() {
 
   const menu = [
     { icon: "store", label: t("admin.sellers"), to: "/admin/sellers" },
+    { icon: "wrench", label: t("admin.masters"), to: "/admin/masters" },
     { icon: "check", label: t("admin.moderation"), to: "/admin/moderation" },
     { icon: "grid", label: t("admin.categories"), to: "/admin/categories" },
     { icon: "percent", label: t("admin.commission"), to: "/admin/commission" },

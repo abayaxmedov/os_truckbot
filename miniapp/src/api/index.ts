@@ -1,5 +1,6 @@
 import { request } from "./client";
 import type {
+  AdminMaster,
   AdminPayout,
   AdminSeller,
   AdminStats,
@@ -164,6 +165,9 @@ export const updateSellerOrderStatus = (id: number, status: string) =>
 // ---- Admin ----
 export const getAdminStats = () => request<AdminStats>("/admin/stats");
 export const getAdminSellers = () => request<AdminSeller[]>("/admin/sellers");
+export const getAdminMasters = () => request<AdminMaster[]>("/admin/masters");
+export const setMasterVerified = (id: number, is_verified: boolean) =>
+  request(`/admin/masters/${id}/verify`, { method: "PATCH", body: { is_verified } });
 export const setSellerStatus = (id: number, status: string) =>
   request(`/admin/sellers/${id}/status`, { method: "PATCH", body: { status } });
 export const setSellerCommission = (id: number, commission_override: number | null) =>
