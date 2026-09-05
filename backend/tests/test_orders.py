@@ -70,6 +70,8 @@ async def test_create_order_splits_and_commission(session):
     assert so.status == OrderStatus.new
     # stock decremented, cart cleared
     assert product.stock_qty == 8
+    # sold counter incremented by the ordered quantity
+    assert product.sold_count == 2
 
 
 @pytest.mark.asyncio

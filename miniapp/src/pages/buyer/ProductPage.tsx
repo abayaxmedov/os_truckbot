@@ -89,8 +89,13 @@ export function ProductPage() {
           {p.in_stock ? t("product.inStock") : t("product.outOfStock")}
         </span>
       </div>
-      <div className="bold tnum mb" style={{ fontSize: 26, letterSpacing: "-0.02em" }}>
+      <div className="bold tnum" style={{ fontSize: 26, letterSpacing: "-0.02em" }}>
         {formatMoney(p.price)} <span className="small muted" style={{ fontSize: 14 }}>{t("common.sum")}</span>
+      </div>
+      <div className="mb" style={{ marginTop: 4 }}>
+        {p.sold_count > 0 && (
+          <span className="pc-sold">🔥 {t("product.sold", { n: p.sold_count })}</span>
+        )}
       </div>
       {isMaster && p.bonus > 0 && (
         <div className="card card-pad mb row" style={{ gap: 10, background: "var(--success-tint)", border: 0 }}>

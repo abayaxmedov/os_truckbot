@@ -1160,6 +1160,14 @@ img {
   }
 }
 
+/* "Sold N times" indicator (social proof). */
+.pc-sold {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+
 /* ---- Select trigger (opens a bottom sheet instead of a native <select>) ---- */
 .select-trigger {
   display: flex;

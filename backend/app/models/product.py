@@ -53,6 +53,7 @@ class Product(Base, TimestampMixin):
     )
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     views: Mapped[int] = mapped_column(Integer, default=0)
+    sold_count: Mapped[int] = mapped_column(Integer, default=0)  # total units sold (denormalized)
 
     seller: Mapped[SellerProfile] = relationship(back_populates="products")
     category: Mapped[Category] = relationship(back_populates="products")

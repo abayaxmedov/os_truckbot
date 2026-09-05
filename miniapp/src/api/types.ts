@@ -119,6 +119,7 @@ export interface ProductListItem {
   seller: SellerBrief | null;
   status: string;
   bonus: number;
+  sold_count: number;
 }
 
 export interface Product extends ProductListItem {

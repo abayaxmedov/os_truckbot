@@ -25,6 +25,9 @@ export function ProductCard({ p }: { p: ProductListItem }) {
         <div className="pc-name">{p.name}</div>
         {p.article && <div className="pc-meta">{t("product.article")}: {p.article}</div>}
         {country && <div className="pc-meta">{country}</div>}
+        {p.sold_count > 0 && (
+          <div className="pc-sold">🔥 {t("product.sold", { n: p.sold_count })}</div>
+        )}
         {isMaster && p.bonus > 0 && (
           <span className="badge badge-green tnum" style={{ alignSelf: "flex-start" }}>
             +{formatMoney(p.bonus)} {t("common.sum")}

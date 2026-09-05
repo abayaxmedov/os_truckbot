@@ -42,6 +42,7 @@ class ProductListItem(BaseModel):
     seller: SellerBrief | None = None
     status: str = "approved"
     bonus: float = 0.0  # master (usta) bonus per unit
+    sold_count: int = 0  # total units sold
 
 
 class ProductOut(ProductListItem):

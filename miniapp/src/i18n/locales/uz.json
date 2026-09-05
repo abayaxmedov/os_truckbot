@@ -58,6 +58,7 @@
     "oem": "Original raqam",
     "partBrand": "Brend",
     "country": "Davlat",
+    "sold": "{{n}} marta sotildi",
     "compatible": "Moslik",
     "warranty": "Kafolat",
     "seller": "Sotuvchi",

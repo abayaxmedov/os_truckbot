@@ -134,6 +134,7 @@ async def create_order(session: AsyncSession, user: User, data: CheckoutInput) -
                 )
             )
             product.stock_qty -= item.quantity
+            product.sold_count = (product.sold_count or 0) + item.quantity
             seller_subtotal += line_total
             seller_commission += commission
 

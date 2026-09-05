@@ -102,6 +102,7 @@ def serialize_product_list_item(p: Product, lang: str = "ru") -> ProductListItem
         seller=serialize_seller_brief(p.seller) if p.seller else None,
         status=p.status.value,
         bonus=_dec(p.bonus),
+        sold_count=p.sold_count,
     )
 
 
