@@ -199,6 +199,23 @@ DEMO_PRODUCTS = [
     ),
 ]
 
+# Plausible manufacturing country (ISO-ish code) per part brand, for demo seed.
+PART_BRAND_COUNTRY = {
+    "MANN": "de",
+    "Bosch": "de",
+    "FEBI": "de",
+    "TRW": "de",
+    "Elring": "de",
+    "Contitech": "de",
+    "Sachs": "de",
+    "Hengst": "de",
+    "Textar": "de",
+    "Fleetguard": "us",
+    "Gates": "us",
+    "SKF": "se",
+    "Petronas": "my",
+}
+
 # Analog cross-references: (title, [(number, brand, is_original), ...])
 ANALOG_GROUPS = [
     (

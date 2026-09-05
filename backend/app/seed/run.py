@@ -156,6 +156,7 @@ async def seed_products(session, brands, categories, sellers) -> None:
             article=article,
             oem_number=oem,
             part_brand=part_brand,
+            country=data.PART_BRAND_COUNTRY.get(part_brand, "de"),
             engine=engine,
             description_ru=f"{name_ru} для грузовых автомобилей.",
             description_uz=f"{name_uz} yuk mashinalari uchun.",

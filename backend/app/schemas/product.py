@@ -32,6 +32,7 @@ class ProductListItem(BaseModel):
     article: str = ""
     oem_number: str = ""
     part_brand: str = ""
+    country: str = ""  # manufacturing country code
     price: float
     currency: str = "UZS"
     stock_qty: int = 0
@@ -68,6 +69,7 @@ class ProductCreate(BaseModel):
     article: str = ""
     oem_number: str = ""
     part_brand: str = ""
+    country: str = ""
     engine: str = ""
     description_ru: str = ""
     description_uz: str = ""
@@ -84,6 +86,7 @@ class ProductUpdate(BaseModel):
     article: str | None = None
     oem_number: str | None = None
     part_brand: str | None = None
+    country: str | None = None
     engine: str | None = None
     description_ru: str | None = None
     description_uz: str | None = None

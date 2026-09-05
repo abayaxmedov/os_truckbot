@@ -36,6 +36,7 @@ class Product(Base, TimestampMixin):
     article_norm: Mapped[str] = mapped_column(String(64), index=True, default="")
     oem_norm: Mapped[str] = mapped_column(String(64), index=True, default="")
     part_brand: Mapped[str] = mapped_column(String(64), index=True, default="")  # Bosch, FEBI...
+    country: Mapped[str] = mapped_column(String(64), default="")  # manufacturing country code (de, tr, cn…)
     engine: Mapped[str] = mapped_column(String(128), default="")
     description_ru: Mapped[str] = mapped_column(Text, default="")
     description_uz: Mapped[str] = mapped_column(Text, default="")

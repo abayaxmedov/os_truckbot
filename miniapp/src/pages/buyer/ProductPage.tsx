@@ -10,6 +10,7 @@ import { Placeholder } from "@/components/Placeholder";
 import { ProductCard } from "@/components/ProductCard";
 import { Sheet } from "@/components/Sheet";
 import { Loader, Stars, useToast } from "@/components/ui";
+import { countryLabel } from "@/lib/countries";
 import { useApi } from "@/lib/useApi";
 import { formatMoney } from "@/lib/format";
 import { useAuth } from "@/store/auth";
@@ -19,7 +20,7 @@ import { haptic } from "@/telegram/telegram";
 export function ProductPage() {
   const { id } = useParams();
   const pid = Number(id);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const nav = useNavigate();
   const toast = useToast();
   const cart = useCart();
@@ -104,6 +105,7 @@ export function ProductPage() {
         {spec("tag", t("product.article"), p.article)}
         {spec("wrench", t("product.oem"), p.oem_number)}
         {spec("sparkles", t("product.partBrand"), p.part_brand)}
+        {spec("truck", t("product.country"), countryLabel(p.country, i18n.language))}
         {spec("settings", t("catalog.engine"), p.engine)}
         {spec("shield", t("product.warranty"), p.warranty)}
         {spec("truck", t("product.compatible"), p.vehicles.map((v) => v.brand_name + (v.model_name ? ` ${v.model_name}` : "")).join(", "))}

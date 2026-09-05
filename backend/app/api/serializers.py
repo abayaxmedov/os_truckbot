@@ -92,6 +92,7 @@ def serialize_product_list_item(p: Product, lang: str = "ru") -> ProductListItem
         article=p.article,
         oem_number=p.oem_number,
         part_brand=p.part_brand,
+        country=p.country,
         price=_dec(p.price),
         currency=p.currency,
         stock_qty=p.stock_qty,

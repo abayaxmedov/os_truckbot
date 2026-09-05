@@ -9,16 +9,17 @@ import { Icon } from "@/components/Icon";
 import { PageHeader } from "@/components/PageHeader";
 import { SelectSheet } from "@/components/SelectSheet";
 import { Loader, useToast } from "@/components/ui";
+import { COUNTRIES } from "@/lib/countries";
 
 const EMPTY = {
   category_id: 0, name_ru: "", name_uz: "", article: "", oem_number: "", part_brand: "",
-  engine: "", description_ru: "", description_uz: "", price: 0, stock_qty: 0, warranty: "",
+  country: "", engine: "", description_ru: "", description_uz: "", price: 0, stock_qty: 0, warranty: "",
 };
 
 export function SellerProductForm() {
   const { id } = useParams();
   const editingId = id ? Number(id) : null;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const nav = useNavigate();
   const toast = useToast();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -48,7 +49,7 @@ export function SellerProductForm() {
       setProduct(p);
       setForm({
         category_id: p.category_id, name_ru: p.name_ru, name_uz: p.name_uz, article: p.article,
-        oem_number: p.oem_number, part_brand: p.part_brand, engine: p.engine,
+        oem_number: p.oem_number, part_brand: p.part_brand, country: p.country, engine: p.engine,
         description_ru: p.description_ru, description_uz: p.description_uz, price: p.price,
         stock_qty: p.stock_qty, warranty: p.warranty,
       });
@@ -155,6 +156,17 @@ export function SellerProductForm() {
         <div className="row" style={{ gap: 10 }}>
           <div className="field" style={{ flex: 1 }}><label>{t("product.partBrand")}</label><input className="input" value={form.part_brand} onChange={(e) => set("part_brand", e.target.value)} /></div>
           <div className="field" style={{ flex: 1 }}><label>{t("catalog.engine")}</label><input className="input" value={form.engine} onChange={(e) => set("engine", e.target.value)} /></div>
+        </div>
+        <div className="field">
+          <label>{t("product.country")}</label>
+          <SelectSheet
+            icon="truck"
+            title={t("product.country")}
+            placeholder="—"
+            value={form.country}
+            onChange={(v) => set("country", String(v))}
+            options={COUNTRIES.map((c) => ({ value: c.code, label: `${c.flag} ${i18n.language === "uz" ? c.uz : c.ru}` }))}
+          />
         </div>
         <div className="row" style={{ gap: 10 }}>
           <div className="field" style={{ flex: 1 }}><label>{t("cart.total")} *</label><input className="input tnum" type="number" inputMode="numeric" value={form.price} onChange={(e) => set("price", e.target.value)} /></div>

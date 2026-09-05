@@ -142,6 +142,7 @@ async def create_product(
         article=payload.article,
         oem_number=payload.oem_number,
         part_brand=payload.part_brand,
+        country=payload.country,
         engine=payload.engine,
         description_ru=payload.description_ru,
         description_uz=payload.description_uz,

@@ -109,6 +109,7 @@ export interface ProductListItem {
   article: string;
   oem_number: string;
   part_brand: string;
+  country: string;
   price: number;
   currency: string;
   stock_qty: number;
